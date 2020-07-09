@@ -30,19 +30,29 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "io.ktor:ktor-server-netty:$ktor_version"
-    compile "ch.qos.logback:logback-classic:$logback_version"
-    compile "io.ktor:ktor-server-core:$ktor_version"
-    compile "io.ktor:ktor-html-builder:$ktor_version"
-    compile "org.jetbrains:kotlin-css-jvm:1.0.0-pre.31-kotlin-1.2.41"
-    compile "io.ktor:ktor-client-core:$ktor_version"
-    compile "io.ktor:ktor-client-core-jvm:$ktor_version"
-    compile "io.ktor:ktor-client-apache:$ktor_version"
-    compile "io.ktor:ktor-jackson:$ktor_version"
-    compile "io.ktor:ktor-locations:$ktor_version"
-    compile "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
-    compile "org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version"
-    compile "org.jetbrains.exposed:exposed:$exposed_version"
-    testCompile "io.ktor:ktor-server-tests:$ktor_version"
+    
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    
+    // Ktor
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    implementation "io.ktor:ktor-server-core:$ktor_version"
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
+    implementation "io.ktor:ktor-client-apache:$ktor_version"
+    implementation "io.ktor:ktor-jackson:$ktor_version"
+    implementation "io.ktor:ktor-locations:$ktor_version"
+    
+    // Log
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+
+    // Kodein DI
+    implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
+    implementation "org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version"
+
+    // Exposed SQL
+    implementation "org.jetbrains.exposed:exposed:$exposed_version"
+
+    // Tests
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 }
