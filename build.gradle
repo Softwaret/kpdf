@@ -48,7 +48,6 @@ dependencies {
 
     // Kodein DI
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
-    implementation "org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version"
 
     // Exposed SQL
     implementation "org.jetbrains.exposed:exposed:$exposed_version"
