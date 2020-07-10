@@ -14,7 +14,7 @@ fun Routing.login(loginController: LoginController) {
 
     post<Login>() {
         with(call) {
-            loginController.login(receive(), ::respond)
+            respond(loginController.login(receive()))
         }
     }
 }

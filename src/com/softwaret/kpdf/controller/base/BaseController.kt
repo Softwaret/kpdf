@@ -13,6 +13,6 @@ abstract class BaseController(
     protected fun error(errorType: ErrorType) =
         errorFactory.build(errorType)
 
-    protected suspend fun (suspend (Response) -> (Unit)).trigger(pair: Pair<HttpStatusCode, Serializable>) =
-        invoke(Response(pair.first, pair.second))
+    protected fun respond(pair: Pair<HttpStatusCode, Serializable>) =
+        Response(pair.first, pair.second)
 }

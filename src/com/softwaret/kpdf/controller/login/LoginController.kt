@@ -5,5 +5,5 @@ import io.ktor.http.Parameters
 
 interface LoginController {
 
-    suspend fun login(parameters: Parameters, response: suspend (Response) -> Unit)
+    suspend fun login(parameters: Parameters): Response
 }
