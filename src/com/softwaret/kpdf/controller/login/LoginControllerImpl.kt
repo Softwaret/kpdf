@@ -20,10 +20,10 @@ class LoginControllerImpl(
         private const val PASSWORD = "password"
     }
 
-    override suspend fun login(parameters: Parameters, respond: suspend (Response) -> Unit) {
+    override suspend fun login(parameters: Parameters, response: suspend (Response) -> Unit) {
         val login = parameters[LOGIN]
         val password = parameters[PASSWORD]
-        respond.trigger(
+        response.trigger(
             when {
                 login.isNullOrEmpty() ->
                     HttpStatusCode.UnprocessableEntity to error(ErrorType.NULL_EMPTY_LOGIN)
