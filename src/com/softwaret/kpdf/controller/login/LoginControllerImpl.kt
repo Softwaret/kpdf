@@ -23,37 +23,19 @@ class LoginControllerImpl(
     override suspend fun login(parameters: Parameters, respond: suspend (Response) -> Unit) {
         val login = parameters[LOGIN]
         val password = parameters[PASSWORD]
-        respond(
+        respond.trigger(
             when {
                 login.isNullOrEmpty() ->
-                    Response(
-                        HttpStatusCode.UnprocessableEntity,
-                        error(ErrorType.NULL_EMPTY_LOGIN)
-                    )
+                    HttpStatusCode.UnprocessableEntity to error(ErrorType.NULL_EMPTY_LOGIN)
                 password.isNullOrEmpty() ->
-                    Response(
-                        HttpStatusCode.UnprocessableEntity,
-                        error(ErrorType.NULL_EMPTY_PASSWORD)
-                    )
+                    HttpStatusCode.UnprocessableEntity to error(ErrorType.NULL_EMPTY_PASSWORD)
                 loginInteractor.doesUserExists(login).not() ->
-                    Response(
-                        HttpStatusCode.NotFound,
-                        error(ErrorType.USER_NOT_EXISTS)
-                    )
+                    HttpStatusCode.NotFound to error(ErrorType.USER_NOT_EXISTS)
                 loginInteractor.areCredentialsValid(login, password).not() ->
-                    Response(
-                        HttpStatusCode.Forbidden,
-                        error(ErrorType.INVALID_CREDENTIALS)
-                    )
+                    HttpStatusCode.Forbidden to error(ErrorType.INVALID_CREDENTIALS)
                 loginInteractor.areCredentialsValid(login, password) ->
-                    Response(
-                        HttpStatusCode.OK,
-                        LoginResponse("TOKEN")
-                    )
-                else -> Response(
-                    HttpStatusCode.Forbidden,
-                    error(ErrorType.UNKNOWN)
-                )
+                    HttpStatusCode.OK to LoginResponse("TOKEN")
+                else -> HttpStatusCode.Forbidden to error(ErrorType.UNKNOWN)
             }
         )
     }
