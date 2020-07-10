@@ -23,31 +23,38 @@ class LoginControllerImpl(
     override suspend fun login(parameters: Parameters, respond: suspend (Response) -> Unit) {
         val login = parameters[LOGIN]
         val password = parameters[PASSWORD]
-        when {
-            login.isNullOrEmpty() -> respond(
-                Response(HttpStatusCode.UnprocessableEntity, error(ErrorType.NULL_EMPTY_LOGIN))
-            )
-            password.isNullOrEmpty() ->
-                respond(
-                    Response(HttpStatusCode.UnprocessableEntity, error(ErrorType.NULL_EMPTY_PASSWORD))
-                )
-            loginInteractor.doesUserExists(login).not() ->
-                respond(
-                    Response(HttpStatusCode.NotFound, error(ErrorType.USER_NOT_EXISTS))
-                )
-            loginInteractor.areCredentialsValid(login, password).not() ->
-                respond(
+        respond(
+            when {
+                login.isNullOrEmpty() ->
                     Response(
-                        HttpStatusCode.Forbidden, error(ErrorType.INVALID_CREDENTIALS)
+                        HttpStatusCode.UnprocessableEntity,
+                        error(ErrorType.NULL_EMPTY_LOGIN)
                     )
+                password.isNullOrEmpty() ->
+                    Response(
+                        HttpStatusCode.UnprocessableEntity,
+                        error(ErrorType.NULL_EMPTY_PASSWORD)
+                    )
+                loginInteractor.doesUserExists(login).not() ->
+                    Response(
+                        HttpStatusCode.NotFound,
+                        error(ErrorType.USER_NOT_EXISTS)
+                    )
+                loginInteractor.areCredentialsValid(login, password).not() ->
+                    Response(
+                        HttpStatusCode.Forbidden,
+                        error(ErrorType.INVALID_CREDENTIALS)
+                    )
+                loginInteractor.areCredentialsValid(login, password) ->
+                    Response(
+                        HttpStatusCode.OK,
+                        LoginResponse("TOKEN")
+                    )
+                else -> Response(
+                    HttpStatusCode.Forbidden,
+                    error(ErrorType.UNKNOWN)
                 )
-            loginInteractor.areCredentialsValid(login, password) ->
-                respond(
-                    Response(HttpStatusCode.OK, LoginResponse("TOKEN"))
-                )
-            else -> respond(
-                Response(HttpStatusCode.Forbidden, error(ErrorType.UNKNOWN))
-            )
-        }
+            }
+        )
     }
 }
