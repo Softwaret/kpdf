@@ -15,6 +15,12 @@ group 'com.softwaret'
 version '0.0.1'
 mainClassName = "io.ktor.server.netty.EngineMain"
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ['src']
     test.kotlin.srcDirs = test.java.srcDirs = ['test']
@@ -30,10 +36,10 @@ repositories {
 }
 
 dependencies {
-    
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    
+
     // Ktor
     implementation "io.ktor:ktor-server-netty:$ktor_version"
     implementation "io.ktor:ktor-server-core:$ktor_version"
@@ -42,12 +48,12 @@ dependencies {
     implementation "io.ktor:ktor-client-apache:$ktor_version"
     implementation "io.ktor:ktor-jackson:$ktor_version"
     implementation "io.ktor:ktor-locations:$ktor_version"
-    
+
     // Log
     implementation "ch.qos.logback:logback-classic:$logback_version"
 
     // Kodein DI
-    implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
+    implementation "org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version"
 
     // Exposed SQL
     implementation "org.jetbrains.exposed:exposed:$exposed_version"
