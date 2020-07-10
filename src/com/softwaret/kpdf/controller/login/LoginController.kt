@@ -1,8 +1,9 @@
 package com.softwaret.kpdf.controller.login
 
+import com.softwaret.kpdf.response.Response
+import io.ktor.http.Parameters
+
 interface LoginController {
 
-    fun sayLogin(): String
-
-    fun testLogin(login: String, password: String) : Boolean
+    suspend fun login(parameters: Parameters, respond: suspend (Response) -> Unit)
 }
