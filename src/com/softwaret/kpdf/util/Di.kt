@@ -1,8 +1,9 @@
 package com.softwaret.kpdf.util
 
-import io.ktor.application.Application
-import org.kodein.di.DIProperty
-import org.kodein.di.instance
+import io.ktor.routing.Routing
+import org.kodein.di.direct
 import org.kodein.di.ktor.di
+import org.kodein.type.generic
 
-inline fun <reified T : Any> Application.instance(tag: Any? = null): DIProperty<T> = di().instance(tag)
+inline fun <reified T : Any> Routing.instance(tag: Any? = null) = di().direct.Instance<T>(generic(), tag)
+
