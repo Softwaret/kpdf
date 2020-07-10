@@ -1,19 +1,22 @@
 package com.softwaret.kpdf
 
 import com.softwaret.kpdf.controller.bindControllers
-import com.softwaret.kpdf.controller.hello.HelloController
+import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.util.instance
 import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.response.respondText
-import io.ktor.routing.get
+import io.ktor.application.install
+import io.ktor.locations.KtorExperimentalLocationsAPI
+import io.ktor.locations.Locations
 import io.ktor.routing.routing
 import org.kodein.di.ktor.di
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.main() {
+
+    install(Locations)
 
     di {
         bindControllers()
@@ -21,10 +24,6 @@ fun Application.main() {
 
     routing {
 
-        val helloController by instance<HelloController>()
-
-        get("/hello") {
-            call.respondText(helloController.sayHello())
-        }
+        login(instance())
     }
 }
