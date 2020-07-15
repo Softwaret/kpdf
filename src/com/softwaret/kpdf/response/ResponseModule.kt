@@ -1,6 +1,6 @@
 package com.softwaret.kpdf.response
 
-import ErrorFactory
+import com.softwaret.kpdf.response.error.factory.ErrorFactory
 import com.softwaret.kpdf.response.error.factory.ErrorFactoryImpl
 import org.kodein.di.DI
 import org.kodein.di.bind
