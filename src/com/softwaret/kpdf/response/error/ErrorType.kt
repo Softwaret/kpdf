@@ -2,21 +2,13 @@ package com.softwaret.kpdf.response.error
 
 enum class ErrorType : ErrorData {
 
-    NULL_EMPTY_LOGIN {
+    AUTORIZATION_FAILED {
         override val message: String
-            get() = "LOGIN CANNOT BE NULL OR EMPTY"
+            get() = "AUTORIZATION FAILED"
     },
-    NULL_EMPTY_PASSWORD {
+    CANNOT_REGISTER_USER {
         override val message: String
-            get() = "PASSWORD CANNOT BE NULL OR EMPTY"
-    },
-    USER_NOT_EXISTS {
-        override val message: String
-            get() = "USER DOES NOT EXIST"
-    },
-    INVALID_CREDENTIALS {
-        override val message: String
-            get() = "GIVEN CREDENTIALS ARE INVALID"
+            get() = "CANNOT REGISTER USER WITH GIVEN DATA"
     },
     UNKNOWN {
         override val message: String

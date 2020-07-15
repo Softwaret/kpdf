@@ -6,3 +6,7 @@ import io.ktor.locations.Location
 @KtorExperimentalLocationsAPI
 @Location("/login")
 class Login
+
+@KtorExperimentalLocationsAPI
+@Location("/register")
+class Register
