@@ -1,30 +1,44 @@
 package com.softwaret.kpdf
 
 import com.softwaret.kpdf.controller.bindControllers
-import com.softwaret.kpdf.controller.hello.HelloController
+import com.softwaret.kpdf.interactor.bindInteractors
+import com.softwaret.kpdf.response.bindResponses
+import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.util.instance
 import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.response.respondText
-import io.ktor.routing.get
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.PartialContent
+import io.ktor.jackson.jackson
+import io.ktor.locations.KtorExperimentalLocationsAPI
+import io.ktor.locations.Locations
 import io.ktor.routing.routing
 import org.kodein.di.ktor.di
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.main() {
 
+    install(Locations)
+    install(ContentNegotiation) {
+        jackson {
+
+        }
+    }
+    install(DefaultHeaders)
+    install(PartialContent)
+
     di {
         bindControllers()
+        bindInteractors()
+        bindResponses()
     }
 
     routing {
 
-        val helloController by instance<HelloController>()
-
-        get("/hello") {
-            call.respondText(helloController.sayHello())
-        }
+        login(instance())
     }
 }
