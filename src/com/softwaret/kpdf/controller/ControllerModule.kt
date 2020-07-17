@@ -13,14 +13,12 @@ fun DI.MainBuilder.bindControllers() {
 
     bind<LoginController>() with singleton {
         LoginControllerImpl(
-            instance(),
             instance()
         )
     }
 
     bind<RegisterController>() with singleton {
         RegisterControllerImpl(
-            instance(),
             instance()
         )
     }
