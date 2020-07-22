@@ -1,4 +1,4 @@
-package com.softwaret.kpdf.util
+package com.softwaret.kpdf.util.extension
 
 import io.ktor.routing.Routing
 import org.kodein.di.direct

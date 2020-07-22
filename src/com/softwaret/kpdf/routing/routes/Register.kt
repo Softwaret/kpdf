@@ -1,20 +1,23 @@
 package com.softwaret.kpdf.routing.routes
 
 import com.softwaret.kpdf.controller.register.RegisterController
-import com.softwaret.kpdf.routing.Register
-import com.softwaret.kpdf.util.respond
+import com.softwaret.kpdf.util.extension.respond
 import io.ktor.application.call
 import io.ktor.locations.KtorExperimentalLocationsAPI
+import io.ktor.locations.Location
 import io.ktor.locations.post
 import io.ktor.request.receive
 import io.ktor.routing.Routing
 
 @KtorExperimentalLocationsAPI
-fun Routing.register(registerController: RegisterController) {
+fun Routing.register(controller: RegisterController) {
 
-    post<Register>() {
+    @Location("/register")
+    class Register
+
+    post<Register> {
         with(call) {
-            respond(registerController.register(receive()))
+            respond(controller.register(receive()))
         }
     }
 }
