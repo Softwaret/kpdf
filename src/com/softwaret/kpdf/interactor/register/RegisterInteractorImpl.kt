@@ -12,4 +12,8 @@ class RegisterInteractorImpl(
 
     override fun registerUser(userTile: UserTile) =
         userService.createUser(userTile)
+
+    override fun generateToken(userTile: UserTile): String {
+        TODO("Not yet implemented")
+    }
 }
