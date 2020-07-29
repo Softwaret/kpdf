@@ -6,5 +6,7 @@ interface RegisterInteractor {
 
     fun doesUserExists(login: String): Boolean
 
-    fun registerAndAuthenticate(userTile: UserTile): String?
+    fun registerUser(userTile: UserTile): Boolean
+
+    fun generateToken(userTile: UserTile): String
 }

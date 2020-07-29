@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class UserServiceImpl : BaseUserService, RegisterUserService, LoginUserService {
+class UserServiceImpl : UserService {
 
     override fun userByLogin(login: String) =
         transaction {
@@ -24,7 +24,4 @@ class UserServiceImpl : BaseUserService, RegisterUserService, LoginUserService {
                 it[name] = user.name
             }.resultedValues != null
         }
-
-    override fun getUserPassword(login: String): String? =
-        userByLogin(login)?.password
 }

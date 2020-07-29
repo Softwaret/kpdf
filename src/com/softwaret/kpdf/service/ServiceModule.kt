@@ -1,15 +1,22 @@
 package com.softwaret.kpdf.service
 
-import com.softwaret.kpdf.service.user.LoginUserService
-import com.softwaret.kpdf.service.user.RegisterUserService
+import com.softwaret.kpdf.service.token.JwtTokenService
+import com.softwaret.kpdf.service.token.TokenService
+import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.service.user.UserServiceImpl
+import com.softwaret.kpdf.util.parameters.ServiceParameters
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.singleton
 
-fun DI.MainBuilder.bindServices() {
+fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
 
-    bind<LoginUserService>() with singleton { UserServiceImpl() }
+    bind<UserService>() with singleton { UserServiceImpl() }
 
-    bind<RegisterUserService>() with singleton { UserServiceImpl() }
+    bind<TokenService>() with singleton {
+        JwtTokenService(
+            serviceParameters.tokenServiceParameters.algorithm,
+            serviceParameters.tokenServiceParameters.expirationTime
+        )
+    }
 }
