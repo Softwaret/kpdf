@@ -10,6 +10,7 @@ import com.softwaret.kpdf.response.success.LoginResponseBody
 import com.softwaret.kpdf.util.parameters.BodyParameter.LOGIN
 import com.softwaret.kpdf.util.parameters.BodyParameter.PASSWORD
 import com.softwaret.kpdf.util.extension.get
+import com.softwaret.kpdf.util.extension.isAnyNotNull
 import io.ktor.http.Parameters
 
 class LoginControllerImpl(
@@ -29,7 +30,9 @@ class LoginControllerImpl(
     private fun areCredentialsValid(login: String?, password: String?) =
         loginInteractor.areCredentialsValid(login!!, password!!)
 
-    private fun isUserDataInvalid(login: String?, password: String?) =
-        login == null || password == null || loginInteractor.doesUserExists(login).not() ||
-                loginInteractor.areCredentialsValid(login, password).not()
+    private fun isUserDataInvalid(login: String?, password: String?) = loginInteractor.run {
+        isAnyNotNull(validateLogin(login), validatePassword(password)) ||
+                doesUserExists(login!!).not() ||
+                areCredentialsValid(login, password!!).not()
+    }
 }

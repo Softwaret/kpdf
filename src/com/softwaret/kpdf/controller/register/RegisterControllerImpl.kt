@@ -11,6 +11,8 @@ import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.RegisterResponseBody
 import com.softwaret.kpdf.util.parameters.BodyParameter.*
 import com.softwaret.kpdf.util.extension.get
+import com.softwaret.kpdf.util.extension.isAnyNotNull
+import com.softwaret.kpdf.util.parameters.BodyParameter.*
 import io.ktor.http.Parameters
 
 class RegisterControllerImpl(
@@ -31,9 +33,10 @@ class RegisterControllerImpl(
             }
         }
 
-    private fun isUserDataInvalid(login: String?, password: String?, name: String?) =
-        login.isNullOrEmpty() || password.isNullOrEmpty() || name.isNullOrEmpty() ||
-                registerInteractor.doesUserExists(login)
+    private fun isUserDataInvalid(login: String?, password: String?, name: String?) = registerInteractor.run {
+        isAnyNotNull(validateLogin(login), validateName(name), validatePassword(password)) ||
+                doesUserExists(login!!)
+    }
 
     private fun registerUser(login: String?, password: String?, name: String?) =
         if (login == null || password == null || name == null) {
