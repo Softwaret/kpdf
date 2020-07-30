@@ -7,11 +7,11 @@ import com.softwaret.kpdf.repository.validation.input.name.NameValidator
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationRepository
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidator
 
-class InputValidationServiceImpl(
+class InputValidatorImpl(
     loginValidationRepository: LoginValidationRepository,
     passwordValidationRepository: PasswordValidationRepository,
     usernameValidationRepository: NameValidationRepository
-) : InputValidationService,
+) : InputValidator,
     LoginValidator by loginValidationRepository,
     PasswordValidator by passwordValidationRepository,
     NameValidator by usernameValidationRepository
