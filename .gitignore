@@ -24,3 +24,7 @@ hs_err_pid*
 
 .idea
 .gradle
+/build
+
+# application.conf file with security-related configs
+/resources/application.conf
