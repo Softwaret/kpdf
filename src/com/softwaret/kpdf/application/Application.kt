@@ -8,6 +8,7 @@ import com.softwaret.kpdf.interactor.bindInteractors
 import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
+import com.softwaret.kpdf.service.token.TokenService
 import com.softwaret.kpdf.util.extension.instance
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import com.softwaret.kpdf.util.parameters.TokenServiceParameters
@@ -23,6 +24,7 @@ import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Locations
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
+import org.kodein.di.instance
 import org.kodein.di.ktor.di
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -31,9 +33,9 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.main() {
+    bindDI()
     installFeatures()
     setupDb()
-    bindDI()
     bindRouting()
 }
 
@@ -44,13 +46,24 @@ private fun Application.installFeatures() {
             configure(SerializationFeature.INDENT_OUTPUT, true)
         }
     }
-    install(Authentication) {
-        jwt {
-
-        }
-    }
     install(DefaultHeaders)
     install(PartialContent)
+    installAuthentication()
+}
+
+private fun Application.installAuthentication() {
+    val tokenService: TokenService by di().instance<TokenService>()
+    install(Authentication) {
+        jwt {
+            verifier(tokenService.verifier)
+            realm = tokenService.realm
+            validate {
+                it.payload.getClaim(tokenService.claimName)
+                    ?.asString()
+                    ?.let(tokenService::validate)
+            }
+        }
+    }
 }
 
 private fun setupDb() {
@@ -80,12 +93,18 @@ private const val EXPIRATION_TIME: Long = 300_00
 @KtorExperimentalAPI
 private fun Application.createServiceParameters(): ServiceParameters {
 
-    val secret = environment.config.property("jwt.COS_CO_BEDZIE_POTRZEBNE").getString()
+    val secret = environment.config.property("jwt.secret").getString()
+    val realm = "KPDF APP"
+    val issuer = "KDPF"
+    val claimName = "login"
 
     return ServiceParameters(
         TokenServiceParameters(
-            Algorithm.HMAC512(secret),
-            EXPIRATION_TIME
+            algorithm = Algorithm.HMAC512(secret),
+            expirationTime = EXPIRATION_TIME,
+            realm = realm,
+            claimName = claimName,
+            issuer = issuer
         )
     )
 }
