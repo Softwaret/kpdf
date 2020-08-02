@@ -9,8 +9,8 @@ import com.softwaret.kpdf.response.Unauthorized
 import com.softwaret.kpdf.response.UnprocessableEntity
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.RegisterResponseBody
-import com.softwaret.kpdf.util.parameters.BodyParameter.*
 import com.softwaret.kpdf.util.extension.get
+import com.softwaret.kpdf.util.parameters.BodyParameter.*
 import io.ktor.http.Parameters
 
 class RegisterControllerImpl(
@@ -41,7 +41,7 @@ class RegisterControllerImpl(
         } else {
             val isRegistered = registerInteractor.registerUser(UserTile.from(login, password, name))
             if (isRegistered) {
-                Response.OK(RegisterResponseBody("jwtService.generateToken()"))
+                Response.OK(RegisterResponseBody(registerInteractor.generateToken(login)))
             } else {
                 Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
             }

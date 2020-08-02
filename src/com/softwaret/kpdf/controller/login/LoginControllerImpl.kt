@@ -7,9 +7,9 @@ import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.Unauthorized
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.LoginResponseBody
+import com.softwaret.kpdf.util.extension.get
 import com.softwaret.kpdf.util.parameters.BodyParameter.LOGIN
 import com.softwaret.kpdf.util.parameters.BodyParameter.PASSWORD
-import com.softwaret.kpdf.util.extension.get
 import io.ktor.http.Parameters
 
 class LoginControllerImpl(
@@ -21,7 +21,13 @@ class LoginControllerImpl(
 
             when {
                 isUserDataInvalid(login, password) -> Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
-                areCredentialsValid(login, password) -> Response.OK(LoginResponseBody("TOKEN"))
+                areCredentialsValid(login, password) -> Response.OK(
+                    LoginResponseBody(
+                        loginInteractor.generateToken(
+                            login!!
+                        )
+                    )
+                )
                 else -> Response.Unauthorized(ErrorResponseBody.Unknown)
             }
         }
