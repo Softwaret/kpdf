@@ -25,8 +25,21 @@ import io.ktor.locations.Locations
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
 import org.kodein.di.ktor.di
+import java.io.File
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+private const val EXAMPLE_APP_CONF_PATH = "resources/application-example.conf"
+private const val APP_CONF_PATH = "resources/application.conf"
+
+private const val CONFIG_ARG_NAME = "-config="
+
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addConfFileLocation(args))
+
+fun addConfFileLocation(args: Array<String>) = when {
+    args.any { it.contains(CONFIG_ARG_NAME) } -> args
+    File(APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$APP_CONF_PATH"
+    File(EXAMPLE_APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$EXAMPLE_APP_CONF_PATH"
+    else -> args
+}
 
 @KtorExperimentalAPI
 @KtorExperimentalLocationsAPI
