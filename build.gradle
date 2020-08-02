@@ -63,4 +63,10 @@ dependencies {
 
     // Tests
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit5:$kotlin_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+}
+
+test {
+    useJUnitPlatform()
 }
