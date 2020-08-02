@@ -7,6 +7,7 @@ import com.softwaret.kpdf.service.user.UserServiceImpl
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import org.kodein.di.DI
 import org.kodein.di.bind
+import org.kodein.di.instance
 import org.kodein.di.singleton
 
 fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
@@ -14,9 +15,15 @@ fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
     bind<UserService>() with singleton { UserServiceImpl() }
 
     bind<TokenService>() with singleton {
-        JwtTokenService(
-            serviceParameters.tokenServiceParameters.algorithm,
-            serviceParameters.tokenServiceParameters.expirationTime
-        )
+        with(serviceParameters.tokenServiceParameters) {
+            JwtTokenService(
+                algorithm,
+                expirationTime,
+                realm,
+                claimName,
+                instance(),
+                issuer
+            )
+        }
     }
 }
