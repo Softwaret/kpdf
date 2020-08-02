@@ -8,5 +8,5 @@ interface RegisterInteractor {
 
     fun registerUser(userTile: UserTile): Boolean
 
-    fun generateToken(userTile: UserTile): String
+    fun generateToken(login: String): String
 }
