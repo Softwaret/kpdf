@@ -12,10 +12,16 @@ import org.kodein.di.singleton
 fun DI.MainBuilder.bindInteractors() {
 
     bind<LoginInteractor>() with singleton {
-        LoginInteractorImpl(instance())
+        LoginInteractorImpl(
+            instance(),
+            instance()
+        )
     }
 
     bind<RegisterInteractor>() with singleton {
-        RegisterInteractorImpl(instance())
+        RegisterInteractorImpl(
+            instance(),
+            instance()
+        )
     }
 }
