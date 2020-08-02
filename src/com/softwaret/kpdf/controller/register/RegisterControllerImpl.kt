@@ -11,26 +11,21 @@ import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.RegisterResponseBody
 import com.softwaret.kpdf.service.validation.input.InputValidator
 import com.softwaret.kpdf.util.extension.areAllNull
-import com.softwaret.kpdf.util.extension.get
-import com.softwaret.kpdf.util.parameters.BodyParameter.*
-import io.ktor.http.Parameters
 
 class RegisterControllerImpl(
     private val interactor: RegisterInteractor,
     private val inputValidator: InputValidator
 ) : BaseController(), RegisterController {
 
-    override fun register(parameters: Parameters) =
-        parameters[LOGIN, PASSWORD, NAME].let { (login, password, name) ->
-            when {
-                isUserDataValid(login, password, name).not() ->
-                    Response.UnprocessableEntity(ErrorResponseBody.AuthorizationFailed)
+    override fun register(login: String?, password: String?, name: String?) =
+        when {
+            isUserDataValid(login, password, name).not() ->
+                Response.UnprocessableEntity(ErrorResponseBody.AuthorizationFailed)
 
-                isUserDataValid(login, password, name) ->
-                    registerUser(login, password, name)
+            isUserDataValid(login, password, name) ->
+                registerUser(login, password, name)
 
-                else -> Response.Unauthorized(ErrorResponseBody.Unknown)
-            }
+            else -> Response.Unauthorized(ErrorResponseBody.Unknown)
         }
 
     private fun isUserDataValid(login: String?, password: String?, name: String?) =
