@@ -19,10 +19,8 @@ class InputValidatorImplUnitTest {
 
     @RelaxedMockK
     lateinit var loginRepositoryMock: LoginValidationRepository
-
     @RelaxedMockK
     lateinit var passwordRepositoryMock: PasswordValidationRepository
-
     @RelaxedMockK
     lateinit var nameRepositoryMock: NameValidationRepository
 
