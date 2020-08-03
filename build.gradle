@@ -70,3 +70,9 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    }
+}
