@@ -3,7 +3,7 @@ package com.softwaret.kpdf.unit.repository.validation.input.password
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationError
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationRepository
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationRepositoryImpl
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertNull
 
 class PasswordValidationRepositoryUnitTest {

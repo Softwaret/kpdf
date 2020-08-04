@@ -3,7 +3,7 @@ package com.softwaret.kpdf.unit.repository.validation.input.name
 import com.softwaret.kpdf.repository.validation.input.name.NameValidationError
 import com.softwaret.kpdf.repository.validation.input.name.NameValidationRepository
 import com.softwaret.kpdf.repository.validation.input.name.NameValidationRepositoryImpl
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertNull
 
 
