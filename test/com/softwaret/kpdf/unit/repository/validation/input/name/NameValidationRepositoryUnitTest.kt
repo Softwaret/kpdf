@@ -6,7 +6,6 @@ import com.softwaret.kpdf.repository.validation.input.name.NameValidationReposit
 import org.junit.jupiter.api.Test
 import kotlin.test.assertNull
 
-
 class NameValidationRepositoryUnitTest {
 
     private val repository: NameValidationRepository = NameValidationRepositoryImpl()

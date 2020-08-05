@@ -23,11 +23,12 @@ class RegisterControllerImpl(
             isInputValid(login, password, name).not() ->
                 Response.UnprocessableEntity(ErrorResponseBody.InputInvalid)
 
-            doesUserExist(login).not() -> if (registerUser(login, password, name)) {
-                Response.OK(RegisterResponseBody("jwtService.generateToken()"))
-            } else {
-                Response.Unauthorized(ErrorResponseBody.CannotRegisterUser)
-            }
+            doesUserExist(login).not() ->
+                if (registerUser(login, password, name)) {
+                    Response.OK(RegisterResponseBody("jwtService.generateToken()"))
+                } else {
+                    Response.Unauthorized(ErrorResponseBody.CannotRegisterUser)
+                }
 
             else -> Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
         }

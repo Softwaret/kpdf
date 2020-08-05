@@ -10,7 +10,8 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("[$detekt_version]")
+    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
+    id "org.jlleitschuh.gradle.ktlint" version "$ktlint_version"
 }
 
 apply plugin: 'kotlin'
@@ -67,6 +68,9 @@ dependencies {
     // JWT tokens
     implementation "io.ktor:ktor-auth-jwt:$ktor_version"
 
+    // Detekt
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detekt_version"
+
     // Tests
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit5:$kotlin_version"
@@ -89,4 +93,7 @@ compileKotlin {
     }
 }
 
-detekt {}
+detekt {
+    input = files(rootProject.rootDir)
+    buildUponDefaultConfig = true
+}
