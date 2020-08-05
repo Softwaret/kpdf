@@ -3,7 +3,7 @@ package com.softwaret.kpdf.unit.repository.validation.input.login
 import com.softwaret.kpdf.repository.validation.input.login.LoginValidationError
 import com.softwaret.kpdf.repository.validation.input.login.LoginValidationRepository
 import com.softwaret.kpdf.repository.validation.input.login.LoginValidationRepositoryImpl
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertNull
 
 
