@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "0cc10f9a-3f45-43a8-ac04-3b1ca5eb620a",
+		"name": "softwaret_kpdf",
+		"description": "https://github.com/Softwaret/kpdf",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"jan\",\n    \"password\": \"jan_pswd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_PATH}}/login",
+					"host": [
+						"{{BASE_PATH}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"jan_l\",\n    \"password\": \"jan_pswd\",\n    \"login\": \"jan\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_PATH}}/register",
+					"host": [
+						"{{BASE_PATH}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "134af140-54f3-4a57-a9fd-035345d40a06",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "03216fc3-ef90-4019-a94a-f672d41784ef",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "1cb41e1f-d5fe-4798-8f9f-24b8b2297c75",
+			"key": "BASE_PATH",
+			"value": "localhost:8080"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
