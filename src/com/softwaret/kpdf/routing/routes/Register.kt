@@ -1,34 +1,22 @@
 package com.softwaret.kpdf.routing.routes
 
 import com.softwaret.kpdf.controller.register.RegisterController
-import com.softwaret.kpdf.util.extension.get
 import com.softwaret.kpdf.util.extension.respond
-import com.softwaret.kpdf.util.parameters.BodyParameter.LOGIN
-import com.softwaret.kpdf.util.parameters.BodyParameter.NAME
-import com.softwaret.kpdf.util.parameters.BodyParameter.PASSWORD
-import io.ktor.application.ApplicationCall
 import io.ktor.application.call
-import io.ktor.http.Parameters
 import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Location
 import io.ktor.locations.post
-import io.ktor.request.receive
 import io.ktor.routing.Routing
 
 @KtorExperimentalLocationsAPI
 fun Routing.register(controller: RegisterController) {
 
     @Location("/register")
-    class Register
+    data class Register(val login: String, val password: String, val name: String)
 
-    post<Register> {
-        with(call) {
-            respond(registerUser(controller))
-        }
+    post<Register> { registerModel ->
+        call.respond(
+            controller.register(registerModel.login, registerModel.password, registerModel.name)
+        )
     }
 }
-
-private suspend fun ApplicationCall.registerUser(controller: RegisterController) =
-    receive<Parameters>()[LOGIN, PASSWORD, NAME].let { (login, password, name) ->
-        controller.register(login, password, name)
-    }

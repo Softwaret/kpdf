@@ -1,6 +1,5 @@
 package com.softwaret.kpdf.util.extension
 
-import com.softwaret.kpdf.util.parameters.BodyParameter
 import io.ktor.http.Parameters
 
 operator fun Parameters.get(bodyParameter: BodyParameter) = get(bodyParameter.parameterName)
