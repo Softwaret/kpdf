@@ -81,12 +81,5 @@
 			}
 		}
 	],
-	"variable": [
-		{
-			"id": "1cb41e1f-d5fe-4798-8f9f-24b8b2297c75",
-			"key": "BASE_PATH",
-			"value": "localhost:8080"
-		}
-	],
 	"protocolProfileBehavior": {}
 }
