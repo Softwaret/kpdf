@@ -8,12 +8,8 @@ class RegisterInteractorImpl(
 ) : RegisterInteractor {
 
     override fun doesUserExists(login: String) =
-        userService.userByLogin(login) != null
+        userService.userByLoginOrNull(login) != null
 
-    override fun registerUser(userTile: UserTile) =
-        userService.createUser(userTile)
-
-    override fun generateToken(userTile: UserTile): String {
-        TODO("Not yet implemented")
-    }
+    override fun registerUser(login: String, password: String, name: String) =
+        userService.createUser(UserTile(login = login, password = password, name = name))
 }

@@ -1,27 +1,25 @@
 package com.softwaret.kpdf.service.user
 
-import com.softwaret.kpdf.db.tables.User
+import com.softwaret.kpdf.db.tables.user.User
+import com.softwaret.kpdf.db.tables.user.UserTile
+import com.softwaret.kpdf.db.tables.user.Users
+import com.softwaret.kpdf.db.tables.user.loadFromTile
 import com.softwaret.kpdf.mapper.toUserTile
-import com.softwaret.kpdf.model.UserTile
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class UserServiceImpl : UserService {
 
-    override fun userByLogin(login: String) =
+    override fun userByLoginOrNull(login: String) =
         transaction {
-            User.select { User.login eq login }
+            Users.select { Users.login eq login }
                 .map(::toUserTile)
                 .firstOrNull()
         }
 
-    override fun createUser(user: UserTile) =
+    override fun createUser(userTile: UserTile) {
         transaction {
-            User.insert {
-                it[login] = user.login
-                it[password] = user.password
-                it[name] = user.name
-            }.resultedValues != null
+            User.new { loadFromTile(userTile) }
         }
+    }
 }

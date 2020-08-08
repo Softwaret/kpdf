@@ -8,7 +8,7 @@ class LoginInteractorImpl(
 ) : LoginInteractor {
 
     override fun areCredentialsValid(login: String, password: String) =
-        userService.userByLogin(login)?.password == password
+        userService.userByLoginOrNull(login)?.password == password
 
     override fun generateToken(userTile: UserTile): String {
         TODO("Not yet implemented")

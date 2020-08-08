@@ -4,5 +4,5 @@ import com.softwaret.kpdf.response.Response
 
 interface RegisterController {
 
-    fun register(login: String?, password: String?, name: String?): Response
+    fun register(login: String, password: String, name: String): Response
 }

@@ -4,5 +4,5 @@ import com.softwaret.kpdf.response.Response
 
 interface LoginController {
 
-    suspend fun login(login: String?, password: String?): Response
+    suspend fun login(login: String, password: String): Response
 }

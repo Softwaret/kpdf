@@ -1,10 +1,11 @@
 package com.softwaret.kpdf.service.user
 
-import com.softwaret.kpdf.model.UserTile
+import com.softwaret.kpdf.db.tables.user.UserTile
+
 
 interface UserService {
 
-    fun userByLogin(login: String): UserTile?
+    fun userByLoginOrNull(login: String): UserTile?
 
-    fun createUser(user: UserTile): Boolean
+    fun createUser(userTile: UserTile)
 }
