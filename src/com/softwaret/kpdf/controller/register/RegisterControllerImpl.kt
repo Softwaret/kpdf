@@ -2,6 +2,9 @@ package com.softwaret.kpdf.controller.register
 
 import com.softwaret.kpdf.controller.base.BaseController
 import com.softwaret.kpdf.interactor.register.RegisterInteractor
+import com.softwaret.kpdf.model.inline.Login
+import com.softwaret.kpdf.model.inline.Name
+import com.softwaret.kpdf.model.inline.Password
 import com.softwaret.kpdf.response.BadRequest
 import com.softwaret.kpdf.response.OK
 import com.softwaret.kpdf.response.Response
@@ -15,7 +18,7 @@ class RegisterControllerImpl(
     private val inputValidator: InputValidator
 ) : BaseController(), RegisterController {
 
-    override fun register(login: String, password: String, name: String) =
+    override fun register(login: Login, password: Password, name: Name) =
         when {
             isInputValid(login, password, name).not() ->
                 Response.BadRequest(ErrorResponseBody.InputInvalid)
@@ -29,11 +32,11 @@ class RegisterControllerImpl(
             }
         }
 
-    private fun isInputValid(login: String, name: String, password: String) =
+    private fun isInputValid(login: Login, password: Password, name: Name) =
         inputValidator.run { areAllNull(validateLogin(login), validateName(name), validatePassword(password)) }
 
-    private fun doesUserExist(login: String) = interactor.doesUserExists(login)
+    private fun doesUserExist(login: Login) = interactor.doesUserExists(login)
 
-    private fun registerUser(login: String, password: String, name: String) =
+    private fun registerUser(login: Login, password: Password, name: Name) =
         interactor.registerUser(login, password, name)
 }

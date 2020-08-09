@@ -14,7 +14,7 @@ import org.kodein.di.singleton
 
 fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
 
-    bind<UserService>() with singleton { UserServiceImpl() }
+    bind<UserService>() with singleton { UserServiceImpl(instance()) }
 
     bind<TokenService>() with singleton {
         JwtTokenService(

@@ -1,6 +1,9 @@
 package com.softwaret.kpdf.routing.routes
 
 import com.softwaret.kpdf.controller.register.RegisterController
+import com.softwaret.kpdf.model.inline.Login
+import com.softwaret.kpdf.model.inline.Name
+import com.softwaret.kpdf.model.inline.Password
 import com.softwaret.kpdf.util.extension.respond
 import io.ktor.application.call
 import io.ktor.locations.KtorExperimentalLocationsAPI
@@ -12,9 +15,9 @@ import io.ktor.routing.Routing
 fun Routing.register(controller: RegisterController) {
 
     @Location("/register")
-    data class Register(val login: String, val password: String, val name: String)
+    data class RegisterLocation(val login: Login, val password: Password, val name: Name)
 
-    post<Register> { registerModel ->
+    post<RegisterLocation> { registerModel ->
         call.respond(
             controller.register(registerModel.login, registerModel.password, registerModel.name)
         )

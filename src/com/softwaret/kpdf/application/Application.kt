@@ -12,6 +12,7 @@ import com.softwaret.kpdf.service.bindServices
 import com.softwaret.kpdf.util.extension.instance
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import com.softwaret.kpdf.util.parameters.TokenServiceParameters
+import com.softwaret.kpdf.util.parameters.bindParameters
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.auth.Authentication
@@ -73,6 +74,9 @@ private fun setupDb() {
 @KtorExperimentalAPI
 private fun Application.bindDI() {
     di {
+        bindParameters(
+            salt = environment.config.property("config.salt").getString()
+        )
         bindControllers()
         bindInteractors()
         bindServices(createServiceParameters())
@@ -82,7 +86,6 @@ private fun Application.bindDI() {
 
 @KtorExperimentalLocationsAPI
 private fun Application.bindRouting() {
-
     routing {
         login(instance())
         register(instance())

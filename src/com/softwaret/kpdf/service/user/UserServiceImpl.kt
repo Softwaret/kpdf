@@ -4,17 +4,24 @@ import com.softwaret.kpdf.db.tables.user.User
 import com.softwaret.kpdf.db.tables.user.UserTile
 import com.softwaret.kpdf.db.tables.user.Users
 import com.softwaret.kpdf.db.tables.user.loadFromTile
-import com.softwaret.kpdf.mapper.toUserTile
-import org.jetbrains.exposed.sql.select
+import com.softwaret.kpdf.db.tables.user.toUserTile
+import com.softwaret.kpdf.model.inline.Login
+import com.softwaret.kpdf.model.inline.Password
+import com.softwaret.kpdf.repository.hash.HashRepository
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class UserServiceImpl : UserService {
+class UserServiceImpl(
+    private val hashRepository: HashRepository
+) : UserService {
 
-    override fun userByLoginOrNull(login: String) =
+    override fun areCredentialsValid(login: Login, password: Password) =
+        userByLoginOrNull(login)?.password?.value == password.hash()
+
+    override fun userByLoginOrNull(login: Login): UserTile? =
         transaction {
-            Users.select { Users.login eq login }
-                .map(::toUserTile)
+            User.find { Users.login eq login.value }
                 .firstOrNull()
+                ?.toUserTile()
         }
 
     override fun createUser(userTile: UserTile) {
@@ -22,4 +29,6 @@ class UserServiceImpl : UserService {
             User.new { loadFromTile(userTile) }
         }
     }
+
+    private fun Password.hash() = hashRepository.hashString(this.value)
 }
