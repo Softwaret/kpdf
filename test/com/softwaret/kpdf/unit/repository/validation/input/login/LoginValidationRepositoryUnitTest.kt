@@ -1,5 +1,6 @@
 package com.softwaret.kpdf.unit.repository.validation.input.login
 
+import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.repository.validation.input.login.LoginValidationError
 import com.softwaret.kpdf.repository.validation.input.login.LoginValidationRepository
 import com.softwaret.kpdf.repository.validation.input.login.LoginValidationRepositoryImpl
@@ -12,19 +13,19 @@ class LoginValidationRepositoryUnitTest {
 
     @Test
     fun `empty login should be incorrect`() {
-        val login = ""
+        val login = Login("")
         assert(repository.validateLogin(login) == LoginValidationError.Generic)
     }
 
     @Test
     fun `null login should be incorrect`() {
-        val login: String? = null
+        val login = null
         assert(repository.validateLogin(login) == LoginValidationError.Generic)
     }
 
     @Test
     fun `not null and not empty login should be correct`() {
-        val login = "test"
+        val login = Login("test")
         assertNull(repository.validateLogin(login))
     }
 }

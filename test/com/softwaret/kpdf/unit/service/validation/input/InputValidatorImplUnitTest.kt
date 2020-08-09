@@ -1,5 +1,8 @@
 package com.softwaret.kpdf.unit.service.validation.input
 
+import com.softwaret.kpdf.model.inline.Login
+import com.softwaret.kpdf.model.inline.Name
+import com.softwaret.kpdf.model.inline.Password
 import com.softwaret.kpdf.repository.validation.input.login.LoginValidationRepository
 import com.softwaret.kpdf.repository.validation.input.name.NameValidationRepository
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationRepository
@@ -19,8 +22,10 @@ class InputValidatorImplUnitTest {
 
     @RelaxedMockK
     lateinit var loginRepositoryMock: LoginValidationRepository
+
     @RelaxedMockK
     lateinit var passwordRepositoryMock: PasswordValidationRepository
+
     @RelaxedMockK
     lateinit var nameRepositoryMock: NameValidationRepository
 
@@ -33,7 +38,7 @@ class InputValidatorImplUnitTest {
 
     @Test
     fun `validate name should pass call to repository`() {
-        val name = "test"
+        val name = Name("test")
 
         validator.validateName(name)
 
@@ -42,7 +47,7 @@ class InputValidatorImplUnitTest {
 
     @Test
     fun `validate name should return value from repository`() {
-        val name = "test"
+        val name = Name("test")
         val returnValue = null
 
         every { nameRepositoryMock.validateName(name) } returns returnValue
@@ -52,7 +57,7 @@ class InputValidatorImplUnitTest {
 
     @Test
     fun `validate login should pass call to repository`() {
-        val login = "test"
+        val login = Login("test")
 
         validator.validateLogin(login)
 
@@ -61,7 +66,7 @@ class InputValidatorImplUnitTest {
 
     @Test
     fun `validate login should return value from repository`() {
-        val login = "test"
+        val login = Login("test")
         val returnValue = null
 
         every { loginRepositoryMock.validateLogin(login) } returns returnValue
@@ -71,7 +76,7 @@ class InputValidatorImplUnitTest {
 
     @Test
     fun `validate password should pass call to repository`() {
-        val password = "test"
+        val password = Password("test")
 
         validator.validatePassword(password)
 
@@ -80,7 +85,7 @@ class InputValidatorImplUnitTest {
 
     @Test
     fun `validate password should return value from repository`() {
-        val password = "test"
+        val password = Password("test")
         val returnValue = null
 
         every { passwordRepositoryMock.validatePassword(password) } returns returnValue
