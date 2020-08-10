@@ -5,13 +5,15 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.softwaret.kpdf.controller.bindControllers
 import com.softwaret.kpdf.db.H2Db
 import com.softwaret.kpdf.interactor.bindInteractors
+import com.softwaret.kpdf.model.inline.Milliseconds
 import com.softwaret.kpdf.repository.bindPreferences
 import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
 import com.softwaret.kpdf.util.extension.instance
-import com.softwaret.kpdf.util.parameters.ServiceParameters
-import com.softwaret.kpdf.util.parameters.TokenServiceParameters
+import com.softwaret.kpdf.util.extension.longProperty
+import com.softwaret.kpdf.util.extension.stringProperty
+import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.bindParameters
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -75,11 +77,11 @@ private fun setupDb() {
 private fun Application.bindDI() {
     di {
         bindParameters(
-            salt = environment.config.property("config.salt").getString()
+            salt = environment.config.stringProperty("config.SALT")
         )
         bindControllers()
         bindInteractors()
-        bindServices(createServiceParameters())
+        bindServices(obtainJwtParameters())
         bindPreferences()
     }
 }
@@ -92,17 +94,11 @@ private fun Application.bindRouting() {
     }
 }
 
-private const val EXPIRATION_TIME: Long = 300_00
-
 @KtorExperimentalAPI
-private fun Application.createServiceParameters(): ServiceParameters {
-
-    val secret = environment.config.property("jwt.COS_CO_BEDZIE_POTRZEBNE").getString()
-
-    return ServiceParameters(
-        TokenServiceParameters(
-            Algorithm.HMAC512(secret),
-            EXPIRATION_TIME
-        )
+private fun Application.obtainJwtParameters() = environment.config.run {
+    JwtParameters(
+        Algorithm.HMAC512(stringProperty("jwt.SECRET")),
+        Milliseconds(longProperty("jwt.VALIDITY_MS")),
+        stringProperty("jwt.ISSUER")
     )
 }
