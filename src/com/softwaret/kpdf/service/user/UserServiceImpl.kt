@@ -3,7 +3,6 @@ package com.softwaret.kpdf.service.user
 import com.softwaret.kpdf.db.tables.user.User
 import com.softwaret.kpdf.db.tables.user.UserTile
 import com.softwaret.kpdf.db.tables.user.Users
-import com.softwaret.kpdf.db.tables.user.loadFromTile
 import com.softwaret.kpdf.db.tables.user.toUserTile
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Password
@@ -15,7 +14,9 @@ class UserServiceImpl(
 ) : UserService {
 
     override fun areCredentialsValid(login: Login, password: Password) =
-        userByLoginOrNull(login)?.password?.value == password.hash()
+        userByLoginOrNull(login)?.password?.value.let {
+            it != null && it == password.hash()
+        }
 
     override fun userByLoginOrNull(login: Login): UserTile? =
         transaction {
@@ -26,7 +27,11 @@ class UserServiceImpl(
 
     override fun createUser(userTile: UserTile) {
         transaction {
-            User.new { loadFromTile(userTile) }
+            User.new {
+                    login = userTile.login.value
+                    name = userTile.name.value
+                    password = userTile.password.hash()
+            }
         }
     }
 

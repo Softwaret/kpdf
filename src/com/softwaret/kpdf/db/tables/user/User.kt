@@ -15,12 +15,6 @@ class User(id: EntityID<Int>) : IntEntity(id) {
     var name by Users.name
 }
 
-fun User.loadFromTile(userTile: UserTile) {
-    login = userTile.login.value
-    password = userTile.password.value
-    name = userTile.name.value
-}
-
 fun User.toUserTile() = UserTile(
     Login(login),
     Password(password),

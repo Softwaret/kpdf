@@ -15,11 +15,11 @@ import io.ktor.routing.Routing
 fun Routing.register(controller: RegisterController) {
 
     @Location("/register")
-    data class RegisterLocation(val login: Login, val password: Password, val name: Name)
+    data class RegisterLocation(val login: String, val password: String, val name: String)
 
     post<RegisterLocation> { registerModel ->
         call.respond(
-            controller.register(registerModel.login, registerModel.password, registerModel.name)
+            controller.register(Login(registerModel.login), Password(registerModel.password), Name(registerModel.name))
         )
     }
 }

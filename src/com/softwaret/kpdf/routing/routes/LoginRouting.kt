@@ -14,11 +14,11 @@ import io.ktor.routing.Routing
 fun Routing.login(controller: LoginController) {
 
     @Location("/login")
-    data class LoginLocation(val login: Login, val password: Password)
+    data class LoginLocation(val login: String, val password: String)
 
     post<LoginLocation> { loginModel ->
         call.respond(
-            controller.login(loginModel.login, loginModel.password)
+            controller.login(Login(loginModel.login), Password(loginModel.password))
         )
     }
 }

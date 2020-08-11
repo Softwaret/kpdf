@@ -28,7 +28,7 @@ class RegisterControllerImpl(
 
             else -> {
                 registerUser(login, password, name)
-                Response.OK(RegisterResponseBody("jwtService.generateToken()"))
+                Response.OK(RegisterResponseBody())
             }
         }
 

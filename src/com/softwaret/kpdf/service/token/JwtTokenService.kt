@@ -12,13 +12,16 @@ class JwtTokenService(
     private val issuer: String
 ) : TokenService {
 
+    companion object {
+        const val LOGIN_CLAIM_NAME = "login"
+    }
+
     override fun generateToken(login: Login): String = JWT.create()
         .withSubject("Authentication")
         .withIssuer(issuer)
-        .withClaim("login", login.value)
+        .withClaim(LOGIN_CLAIM_NAME, login.value)
         .withExpiresAt(obtainExpirationDate())
         .sign(algorithm)
 
     private fun obtainExpirationDate() = Date(System.currentTimeMillis() + expirationPeriod.value)
-
 }
