@@ -33,10 +33,8 @@ import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.features.PartialContent
 import io.ktor.jackson.jackson
-import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Locations
 import io.ktor.routing.routing
-import io.ktor.util.KtorExperimentalAPI
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.ktor.di
 import java.io.File
@@ -76,22 +74,21 @@ private fun Application.installFeatures() {
     install(Authentication) {
         jwt {
             realm = this@installFeatures.environment.config.realm
-            verifier(buildJwtValidator())
-            validate {
-                transaction {
-                    if (userByLoginExists(it)) {
-                        JWTPrincipal(it.payload)
-                    } else {
-                        null
-                    }
-                }
-            }
+            verifier(buildJwtVerifier())
+            validate { jwtCredential -> validateCredential(jwtCredential) }
         }
     }
 }
 
+private fun validateCredential(jwtCredential: JWTCredential) =
+    if (userByLoginExists(jwtCredential)) {
+        JWTPrincipal(jwtCredential.payload)
+    } else {
+        null
+    }
+
 private fun userByLoginExists(it: JWTCredential) =
-    User.find { Users.login eq it.payload.getClaim(LOGIN_CLAIM_NAME).asString() }.empty().not()
+    transaction { User.find { Users.login eq it.payload.getClaim(LOGIN_CLAIM_NAME).asString() }.empty().not() }
 
 private fun setupDb() {
     H2Db.init()
@@ -124,7 +121,7 @@ private fun Application.obtainJwtParameters() = environment.config.run {
     )
 }
 
-private fun Application.buildJwtValidator() = environment.config.run {
+private fun Application.buildJwtVerifier() = environment.config.run {
     JWT.require(algorithm)
         .withIssuer(issuer)
         .build()
