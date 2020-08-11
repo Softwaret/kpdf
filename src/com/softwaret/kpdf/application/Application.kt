@@ -91,7 +91,7 @@ private fun Application.installFeatures() {
 }
 
 private fun userByLoginExists(it: JWTCredential) =
-    User.find { Users.login eq it.payload.getClaim(LOGIN_CLAIM_NAME).asString() }.firstOrNull() != null
+    User.find { Users.login eq it.payload.getClaim(LOGIN_CLAIM_NAME).asString() }.empty().not()
 
 private fun setupDb() {
     H2Db.init()
