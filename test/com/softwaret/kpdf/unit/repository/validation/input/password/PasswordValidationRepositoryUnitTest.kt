@@ -18,12 +18,6 @@ class PasswordValidationRepositoryUnitTest {
     }
 
     @Test
-    fun `null password should be incorrect`() {
-        val password = null
-        assert(repository.validatePassword(password) == PasswordValidationError.Generic)
-    }
-
-    @Test
     fun `not null and not empty password should be correct`() {
         val password = Password("test")
         assertNull(repository.validatePassword(password))

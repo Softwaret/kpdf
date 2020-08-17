@@ -28,9 +28,9 @@ class UserServiceImpl(
     override fun createUser(userTile: UserTile) {
         transaction {
             User.new {
-                    login = userTile.login.value
-                    name = userTile.name.value
-                    password = userTile.password.hash()
+                login = userTile.login.value
+                name = userTile.name.value
+                password = userTile.password.hash()
             }
         }
     }

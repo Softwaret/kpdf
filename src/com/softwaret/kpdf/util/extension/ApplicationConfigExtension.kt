@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.softwaret.kpdf.model.inline.Milliseconds
 import io.ktor.config.ApplicationConfig
 
-
 val ApplicationConfig.algorithm: Algorithm
     get() = Algorithm.HMAC512(stringProperty("jwt.SECRET"))
 

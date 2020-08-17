@@ -18,12 +18,6 @@ class LoginValidationRepositoryUnitTest {
     }
 
     @Test
-    fun `null login should be incorrect`() {
-        val login = null
-        assert(repository.validateLogin(login) == LoginValidationError.Generic)
-    }
-
-    @Test
     fun `not null and not empty login should be correct`() {
         val login = Login("test")
         assertNull(repository.validateLogin(login))

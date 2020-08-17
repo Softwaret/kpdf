@@ -18,12 +18,6 @@ class NameValidationRepositoryUnitTest {
     }
 
     @Test
-    fun `null name should be incorrect`() {
-        val name = null
-        assert(repository.validateName(name) == NameValidationError.Generic)
-    }
-
-    @Test
     fun `not null and not empty name should be correct`() {
         val name = Name("test")
         assertNull(repository.validateName(name))
