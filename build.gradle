@@ -12,6 +12,7 @@ buildscript {
 plugins {
     id "io.gitlab.arturbosch.detekt" version "$detekt_version"
     id "org.jlleitschuh.gradle.ktlint" version "$ktlint_version"
+    id "org.jetbrains.dokka" version "$dokka_version"
 }
 
 apply plugin: 'kotlin'
@@ -96,4 +97,9 @@ compileKotlin {
 detekt {
     input = files(rootProject.rootDir)
     buildUponDefaultConfig = true
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
 }
