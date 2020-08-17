@@ -9,5 +9,3 @@ fun toUserTile(row: ResultRow) = UserTile(
     row[User.password],
     row[User.name]
 )
-
-

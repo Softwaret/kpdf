@@ -1,11 +1,18 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
+}
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
+    id "org.jlleitschuh.gradle.ktlint" version "$ktlint_version"
+    id "org.jetbrains.dokka" version "$dokka_version"
 }
 
 apply plugin: 'kotlin'
@@ -20,6 +27,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         jvmTarget = "1.8"
     }
 }
+tasks.detekt.jvmTarget = "1.8"
 
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ['src']
@@ -61,12 +69,37 @@ dependencies {
     // JWT tokens
     implementation "io.ktor:ktor-auth-jwt:$ktor_version"
 
+    // Detekt
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detekt_version"
+
     // Tests
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit5:$kotlin_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation(platform('org.junit:junit-bom:5.6.2'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
 }
 
 compileKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
+}
+
+detekt {
+    input = files(rootProject.rootDir)
+    buildUponDefaultConfig = true
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
 }

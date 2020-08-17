@@ -3,7 +3,7 @@ package com.softwaret.kpdf.application
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.softwaret.kpdf.controller.bindControllers
-import com.softwaret.kpdf.db.Db
+import com.softwaret.kpdf.db.H2Db
 import com.softwaret.kpdf.interactor.bindInteractors
 import com.softwaret.kpdf.repository.bindPreferences
 import com.softwaret.kpdf.routing.routes.login
@@ -60,7 +60,6 @@ private fun Application.installFeatures() {
     }
     install(Authentication) {
         jwt {
-
         }
     }
     install(DefaultHeaders)
@@ -68,7 +67,7 @@ private fun Application.installFeatures() {
 }
 
 private fun setupDb() {
-    Db.init()
+    H2Db.init()
 }
 
 @KtorExperimentalAPI

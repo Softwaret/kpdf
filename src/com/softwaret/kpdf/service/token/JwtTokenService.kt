@@ -1,7 +1,7 @@
 package com.softwaret.kpdf.service.token
 
 import com.auth0.jwt.algorithms.Algorithm
-import java.util.*
+import java.util.Date
 
 class JwtTokenService(
     private val algorithm: Algorithm,

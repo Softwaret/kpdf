@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package com.softwaret.kpdf.response
 
 import io.ktor.http.HttpStatusCode
