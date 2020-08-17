@@ -12,7 +12,7 @@ internal class SaltingHashRepositoryTest {
         val input = "asdb"
         val expectedOutput = "1ba28d80572f43983de521229067bb79b805cf6a62546eff877b332d9eb6abe5"
 
-        assertEquals(expectedOutput, SaltingHashRepository(salt).hashString(input))
+        assertEquals(expectedOutput, SaltingHashRepository(salt).hash(input))
     }
 
     @Test
@@ -21,7 +21,7 @@ internal class SaltingHashRepositoryTest {
         val input = "asdb"
         val expectedOutput = "bb2ac3b6b16eb2ac07d9a3c2192561d1d9df38f0cc61bb553f514a113910b120"
 
-        assertEquals(expectedOutput, SaltingHashRepository(salt).hashString(input))
+        assertEquals(expectedOutput, SaltingHashRepository(salt).hash(input))
     }
 
     @Test
@@ -29,6 +29,6 @@ internal class SaltingHashRepositoryTest {
         val salt = ""
         val input = ""
 
-        assertThrows<IllegalArgumentException> { SaltingHashRepository(salt).hashString(input) }
+        assertThrows<IllegalArgumentException> { SaltingHashRepository(salt).hash(input) }
     }
 }
