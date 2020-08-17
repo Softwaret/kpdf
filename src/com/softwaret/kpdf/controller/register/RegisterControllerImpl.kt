@@ -9,41 +9,43 @@ import com.softwaret.kpdf.response.Unauthorized
 import com.softwaret.kpdf.response.UnprocessableEntity
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.RegisterResponseBody
-import com.softwaret.kpdf.util.parameters.BodyParameter.*
-import com.softwaret.kpdf.util.extension.get
-import io.ktor.http.Parameters
+import com.softwaret.kpdf.service.validation.input.InputValidator
+import com.softwaret.kpdf.util.extension.areAllNull
+import com.softwaret.kpdf.util.extension.requireNotNullAndNotBlank
 
 class RegisterControllerImpl(
-    private val registerInteractor: RegisterInteractor
+    private val interactor: RegisterInteractor,
+    private val inputValidator: InputValidator
 ) : BaseController(), RegisterController {
 
-    override fun register(parameters: Parameters) = parameters[LOGIN, PASSWORD, NAME]
-        .let { (login, password, name) ->
+    override fun register(login: String?, password: String?, name: String?) =
+        when {
+            isInputValid(login, password, name).not() ->
+                Response.UnprocessableEntity(ErrorResponseBody.InputInvalid)
 
-            when {
-                isUserDataInvalid(login, password, name) ->
-                    Response.UnprocessableEntity(ErrorResponseBody.AuthorizationFailed)
-
-                isUserDataInvalid(login, password, name).not() ->
-                    registerUser(login, password, name)
-
-                else -> Response.Unauthorized(ErrorResponseBody.Unknown)
-            }
-        }
-
-    private fun isUserDataInvalid(login: String?, password: String?, name: String?) =
-        login.isNullOrEmpty() || password.isNullOrEmpty() || name.isNullOrEmpty() ||
-                registerInteractor.doesUserExists(login)
-
-    private fun registerUser(login: String?, password: String?, name: String?) =
-        if (login == null || password == null || name == null) {
-            Response.UnprocessableEntity(ErrorResponseBody.CannotRegisterUser)
-        } else {
-            val isRegistered = registerInteractor.registerUser(UserTile.from(login, password, name))
-            if (isRegistered) {
+            doesUserExist(login).not() -> if (registerUser(login, password, name)) {
                 Response.OK(RegisterResponseBody("jwtService.generateToken()"))
             } else {
-                Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
+                Response.Unauthorized(ErrorResponseBody.CannotRegisterUser)
             }
+
+            else -> Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
         }
+
+    private fun isInputValid(login: String?, name: String?, password: String?) =
+        inputValidator.run { areAllNull(validateLogin(login), validateName(name), validatePassword(password)) }
+
+    private fun doesUserExist(login: String?): Boolean {
+        requireNotNullAndNotBlank(login) { "Login should not be null" }
+
+        return interactor.doesUserExists(login)
+    }
+
+    private fun registerUser(login: String?, password: String?, name: String?): Boolean {
+        requireNotNullAndNotBlank(login) { "Login should not be null" }
+        requireNotNullAndNotBlank(password) { "Password should not be null" }
+        requireNotNullAndNotBlank(name) { "Name should not be null" }
+
+        return interactor.registerUser(UserTile.from(login, password, name))
+    }
 }

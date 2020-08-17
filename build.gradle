@@ -64,3 +64,9 @@ dependencies {
     // Tests
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 }
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+    }
+}

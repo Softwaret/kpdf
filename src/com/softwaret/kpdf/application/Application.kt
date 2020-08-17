@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.softwaret.kpdf.controller.bindControllers
 import com.softwaret.kpdf.db.Db
 import com.softwaret.kpdf.interactor.bindInteractors
+import com.softwaret.kpdf.repository.bindPreferences
 import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
@@ -76,6 +77,7 @@ private fun Application.bindDI() {
         bindControllers()
         bindInteractors()
         bindServices(createServiceParameters())
+        bindPreferences()
     }
 }
 

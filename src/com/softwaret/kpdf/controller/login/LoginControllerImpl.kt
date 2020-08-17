@@ -7,29 +7,34 @@ import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.Unauthorized
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.LoginResponseBody
-import com.softwaret.kpdf.util.parameters.BodyParameter.LOGIN
-import com.softwaret.kpdf.util.parameters.BodyParameter.PASSWORD
-import com.softwaret.kpdf.util.extension.get
-import io.ktor.http.Parameters
+import com.softwaret.kpdf.service.validation.input.InputValidator
+import com.softwaret.kpdf.util.extension.areAllNull
+import com.softwaret.kpdf.util.extension.requireNotNullAndNotBlank
 
 class LoginControllerImpl(
-    private val loginInteractor: LoginInteractor
+    private val interactor: LoginInteractor,
+    private val inputValidator: InputValidator
 ) : BaseController(), LoginController {
 
-    override suspend fun login(parameters: Parameters) =
-        parameters[LOGIN, PASSWORD].let { (login, password) ->
+    override suspend fun login(login: String?, password: String?) =
+        when {
+            isInputValid(login, password).not() ->
+                Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
 
-            when {
-                isUserDataInvalid(login, password) -> Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
-                areCredentialsValid(login, password) -> Response.OK(LoginResponseBody("TOKEN"))
-                else -> Response.Unauthorized(ErrorResponseBody.Unknown)
-            }
+            areCredentialsValid(login, password) ->
+                Response.OK(LoginResponseBody("TOKEN"))
+
+            else -> Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
         }
 
-    private fun areCredentialsValid(login: String?, password: String?) =
-        loginInteractor.areCredentialsValid(login!!, password!!)
+    private fun isInputValid(login: String?, password: String?) = inputValidator.run {
+        areAllNull(validateLogin(login), validatePassword(password))
+    }
 
-    private fun isUserDataInvalid(login: String?, password: String?) =
-        login == null || password == null || loginInteractor.doesUserExists(login).not() ||
-                loginInteractor.areCredentialsValid(login, password).not()
+    private fun areCredentialsValid(login: String?, password: String?): Boolean {
+        requireNotNullAndNotBlank(login) { "Login should not be null" }
+        requireNotNullAndNotBlank(password) { "Password should not be null" }
+
+        return interactor.areCredentialsValid(login, password)
+    }
 }

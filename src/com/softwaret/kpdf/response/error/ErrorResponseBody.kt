@@ -9,5 +9,7 @@ sealed class ErrorResponseBody(val message: String) : ResponseBody {
 
     object CannotRegisterUser : ErrorResponseBody("CANNOT REGISTER USER WITH GIVEN DATA")
 
+    object InputInvalid : ErrorResponseBody("INPUT INVALID")
+
     object Unknown : ErrorResponseBody("UNKNOWN ERROR OCCURRED")
 }
