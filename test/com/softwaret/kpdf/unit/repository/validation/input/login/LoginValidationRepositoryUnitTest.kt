@@ -6,7 +6,6 @@ import com.softwaret.kpdf.repository.validation.input.login.LoginValidationRepos
 import org.junit.jupiter.api.Test
 import kotlin.test.assertNull
 
-
 class LoginValidationRepositoryUnitTest {
 
     private val repository: LoginValidationRepository = LoginValidationRepositoryImpl()

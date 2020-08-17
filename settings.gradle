@@ -1,1 +1,8 @@
+pluginManagement {
+    repositories {
+        jcenter()
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = "com.softwaret.kpdf"
