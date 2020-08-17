@@ -3,7 +3,11 @@ package com.softwaret.kpdf.db.tables
 import org.jetbrains.exposed.dao.IntIdTable
 
 object User : IntIdTable() {
-    val login = varchar("login", 50)
-    val password = varchar("password", 50)
-    val name = varchar("name", 100)
+    private const val LOGIN_LENGTH = 50
+    private const val PASSWORD_LENGTH = 50
+    private const val NAME_LENGTH = 50
+
+    val login = varchar("login", LOGIN_LENGTH)
+    val password = varchar("password", PASSWORD_LENGTH)
+    val name = varchar("name", NAME_LENGTH)
 }

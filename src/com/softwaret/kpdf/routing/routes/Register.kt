@@ -3,7 +3,9 @@ package com.softwaret.kpdf.routing.routes
 import com.softwaret.kpdf.controller.register.RegisterController
 import com.softwaret.kpdf.util.extension.get
 import com.softwaret.kpdf.util.extension.respond
-import com.softwaret.kpdf.util.parameters.BodyParameter.*
+import com.softwaret.kpdf.util.parameters.BodyParameter.LOGIN
+import com.softwaret.kpdf.util.parameters.BodyParameter.NAME
+import com.softwaret.kpdf.util.parameters.BodyParameter.PASSWORD
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.Parameters
