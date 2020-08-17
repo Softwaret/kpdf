@@ -4,8 +4,8 @@ import com.softwaret.kpdf.model.inline.Name
 
 class NameValidationRepositoryImpl : NameValidationRepository {
 
-    override fun validateName(name: Name?) =
-        if (name?.value.isNullOrBlank()) {
+    override fun validateName(name: Name) =
+        if (name.value.isBlank()) {
             NameValidationError.Generic
         } else {
             null

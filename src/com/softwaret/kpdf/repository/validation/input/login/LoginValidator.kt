@@ -4,5 +4,5 @@ import com.softwaret.kpdf.model.inline.Login
 
 interface LoginValidator {
 
-    fun validateLogin(login: Login?): LoginValidationError?
+    fun validateLogin(login: Login): LoginValidationError?
 }

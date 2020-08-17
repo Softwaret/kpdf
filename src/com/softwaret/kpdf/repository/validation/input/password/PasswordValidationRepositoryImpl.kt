@@ -4,8 +4,8 @@ import com.softwaret.kpdf.model.inline.Password
 
 class PasswordValidationRepositoryImpl : PasswordValidationRepository {
 
-    override fun validatePassword(password: Password?) =
-        if (password?.value.isNullOrBlank()) {
+    override fun validatePassword(password: Password) =
+        if (password.value.isBlank()) {
             PasswordValidationError.Generic
         } else {
             null

@@ -35,5 +35,5 @@ class UserServiceImpl(
         }
     }
 
-    private fun Password.hash() = hashRepository.hashString(this.value)
+    private fun Password.hash() = hashRepository.hash(this.value)
 }
