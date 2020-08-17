@@ -7,8 +7,8 @@ import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.Unauthorized
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.LoginResponseBody
-import com.softwaret.kpdf.util.BodyParameter.LOGIN
-import com.softwaret.kpdf.util.BodyParameter.PASSWORD
+import com.softwaret.kpdf.util.parameters.BodyParameter.LOGIN
+import com.softwaret.kpdf.util.parameters.BodyParameter.PASSWORD
 import com.softwaret.kpdf.util.extension.get
 import io.ktor.http.Parameters
 

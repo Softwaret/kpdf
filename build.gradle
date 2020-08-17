@@ -58,6 +58,9 @@ dependencies {
     // Exposed SQL
     implementation "org.jetbrains.exposed:exposed:$exposed_version"
 
+    // JWT tokens
+    implementation "io.ktor:ktor-auth-jwt:$ktor_version"
+
     // Tests
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 }
