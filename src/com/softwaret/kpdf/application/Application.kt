@@ -15,6 +15,7 @@ import com.softwaret.kpdf.service.bindServices
 import com.softwaret.kpdf.service.token.JwtTokenService
 import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
+import com.softwaret.kpdf.util.parameters.ServiceParameters
 import com.softwaret.kpdf.util.parameters.bindParameters
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -91,7 +92,7 @@ private fun Application.bindDI() {
         )
         bindControllers()
         bindInteractors()
-        bindServices(obtainJwtParameters())
+        bindServices(obtainParameters())
         bindPreferences()
     }
 }
@@ -103,11 +104,13 @@ private fun Application.bindRouting() {
     }
 }
 
-private fun Application.obtainJwtParameters() = environment.config.run {
-    JwtParameters(
-        algorithm,
-        validity,
-        issuer
+private fun Application.obtainParameters() = environment.config.run {
+    ServiceParameters(
+        jwtParameters = JwtParameters(
+            algorithm,
+            validity,
+            issuer
+        )
     )
 }
 

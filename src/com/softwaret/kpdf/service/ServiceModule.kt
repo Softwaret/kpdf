@@ -7,21 +7,24 @@ import com.softwaret.kpdf.service.user.UserServiceImpl
 import com.softwaret.kpdf.service.validation.input.InputValidator
 import com.softwaret.kpdf.service.validation.input.InputValidatorImpl
 import com.softwaret.kpdf.util.parameters.JwtParameters
+import com.softwaret.kpdf.util.parameters.ServiceParameters
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
 
-fun DI.MainBuilder.bindServices(jwtParameters: JwtParameters) {
+fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
 
     bind<UserService>() with singleton { UserServiceImpl(instance()) }
 
     bind<TokenService>() with singleton {
-        JwtTokenService(
-            jwtParameters.algorithm,
-            jwtParameters.validityPeriod,
-            jwtParameters.issuer
-        )
+        with(serviceParameters) {
+            JwtTokenService(
+                jwtParameters.algorithm,
+                jwtParameters.validityPeriod,
+                jwtParameters.issuer
+            )
+        }
     }
 
     bind<InputValidator>() with singleton { InputValidatorImpl(instance(), instance(), instance()) }
