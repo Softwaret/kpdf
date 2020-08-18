@@ -6,7 +6,6 @@ import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.service.user.UserServiceImpl
 import com.softwaret.kpdf.service.validation.input.InputValidator
 import com.softwaret.kpdf.service.validation.input.InputValidatorImpl
-import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import org.kodein.di.DI
 import org.kodein.di.bind
