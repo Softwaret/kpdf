@@ -5,7 +5,6 @@ import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Name
 import com.softwaret.kpdf.model.inline.Password
 import com.softwaret.kpdf.service.user.UserService
-import com.softwaret.kpdf.service.user.doesUserExist
 
 class RegisterInteractorImpl(
     private val userService: UserService
