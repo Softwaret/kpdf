@@ -4,7 +4,7 @@ import com.softwaret.kpdf.db.tables.user.UserTile
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Password
 
-interface UserService {
+interface UserService : UserExistenceService {
 
     fun areCredentialsValid(login: Login, password: Password): Boolean
 
@@ -13,5 +13,3 @@ interface UserService {
     fun createUser(userTile: UserTile)
 }
 
-fun UserService.doesUserExist(login: Login) =
-    userByLoginOrNull(login) != null
