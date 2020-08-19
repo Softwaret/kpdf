@@ -19,8 +19,6 @@ fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
 
     bind<UserService>() with singleton { UserServiceImpl(instance()) }
 
-    bind<UserExistenceService>() with singleton { UserServiceImpl(instance()) }
-
     bind<TokenService>() with singleton {
         with(serviceParameters) {
             JwtTokenService(
