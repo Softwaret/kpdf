@@ -10,8 +10,6 @@ import com.softwaret.kpdf.repository.bindPreferences
 import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
-import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
-import com.softwaret.kpdf.service.user.UserExistenceService
 import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
@@ -47,9 +45,9 @@ fun addConfFileLocation(args: Array<String>) = when {
 
 @Suppress("unused")
 fun Application.main() {
+    bindDI()
     installFeatures()
     setupDb()
-    bindDI()
     bindRouting()
 }
 
@@ -74,7 +72,7 @@ private fun Application.installFeatures() {
 }
 
 private fun Application.validateCredential(jwtCredential: JWTCredential) =
-    if (instance<UserExistenceService>().doesUserExist(jwtCredential.loginFromPayload)) {
+    if (userService.doesUserExist(jwtCredential.loginFromPayload)) {
         JWTPrincipal(jwtCredential.payload)
     } else {
         null
@@ -114,5 +112,5 @@ private fun Application.obtainParameters() = environment.config.run {
 }
 
 private fun Application.buildJwtVerifier() = environment.config.run {
-    instance<JWTTokenVeryfingService>().buildVerifier(algorithm, issuer)
+    jwtTokenVerifierService.buildVerifier(algorithm, issuer)
 }
