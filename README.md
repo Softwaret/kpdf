@@ -1,3 +1,5 @@
+![CI](https://github.com/Softwaret/kpdf/workflows/.github/gradle.yml/badge.svg?branch=develop)
+
 # What is KPDF
 Simple HTTP service to manage PDF files, served as so-called publications. Written entirely in **Kotlin**, 
 using **Ktor**, **Exposed** and **Kodein**. 
