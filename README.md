@@ -1,4 +1,5 @@
 ![CI](https://github.com/Softwaret/kpdf/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/softwaret/kpdf/branch/develop/graph/badge.svg)](https://codecov.io/gh/softwaret/kpdf)
 
 # What is KPDF
 Simple HTTP service to manage PDF files, served as so-called publications. Written entirely in **Kotlin**, 
