@@ -13,6 +13,7 @@ plugins {
     id "io.gitlab.arturbosch.detekt" version "$detekt_version"
     id "org.jlleitschuh.gradle.ktlint" version "$ktlint_version"
     id "org.jetbrains.dokka" version "$dokka_version"
+    id "jacoco"
 }
 
 apply plugin: 'kotlin'
@@ -87,6 +88,7 @@ test {
         events "passed", "skipped", "failed"
         showStandardStreams = true
     }
+    finalizedBy jacocoTestReport
 }
 
 detekt {
@@ -98,4 +100,15 @@ detekt {
 dokka {
     outputFormat = 'html'
     outputDirectory = "$buildDir/dokka"
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/reports")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+    }
 }
