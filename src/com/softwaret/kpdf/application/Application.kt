@@ -10,6 +10,8 @@ import com.softwaret.kpdf.repository.bindPreferences
 import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
+import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
+import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
@@ -33,6 +35,12 @@ import java.io.File
 private const val EXAMPLE_APP_CONF_PATH = "resources/application-example.conf"
 private const val APP_CONF_PATH = "resources/application.conf"
 private const val CONFIG_ARG_NAME = "-config="
+
+private val Application.userService
+    get() = instance<UserService>()
+
+private val Application.jwtTokenVerifierService
+    get() = instance<JWTTokenVeryfingService>()
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addConfFileLocation(args))
 
