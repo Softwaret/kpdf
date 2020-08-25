@@ -1,5 +1,6 @@
 package com.softwaret.kpdf.unit.repository.validation.input.password
 
+import com.softwaret.kpdf.model.inline.Password
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationError
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationRepository
 import com.softwaret.kpdf.repository.validation.input.password.PasswordValidationRepositoryImpl
@@ -12,19 +13,13 @@ class PasswordValidationRepositoryUnitTest {
 
     @Test
     fun `empty password should be incorrect`() {
-        val password = ""
-        assert(repository.validatePassword(password) == PasswordValidationError.Generic)
-    }
-
-    @Test
-    fun `null password should be incorrect`() {
-        val password: String? = null
+        val password = Password("")
         assert(repository.validatePassword(password) == PasswordValidationError.Generic)
     }
 
     @Test
     fun `not null and not empty password should be correct`() {
-        val password = "test"
+        val password = Password("test")
         assertNull(repository.validatePassword(password))
     }
 }

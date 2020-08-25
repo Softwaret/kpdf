@@ -1,5 +1,6 @@
 package com.softwaret.kpdf.unit.repository.validation.input.name
 
+import com.softwaret.kpdf.model.inline.Name
 import com.softwaret.kpdf.repository.validation.input.name.NameValidationError
 import com.softwaret.kpdf.repository.validation.input.name.NameValidationRepository
 import com.softwaret.kpdf.repository.validation.input.name.NameValidationRepositoryImpl
@@ -12,19 +13,13 @@ class NameValidationRepositoryUnitTest {
 
     @Test
     fun `empty name should be incorrect`() {
-        val name = ""
-        assert(repository.validateName(name) == NameValidationError.Generic)
-    }
-
-    @Test
-    fun `null name should be incorrect`() {
-        val name: String? = null
+        val name = Name("")
         assert(repository.validateName(name) == NameValidationError.Generic)
     }
 
     @Test
     fun `not null and not empty name should be correct`() {
-        val name = "test"
+        val name = Name("test")
         assertNull(repository.validateName(name))
     }
 }

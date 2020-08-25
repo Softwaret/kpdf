@@ -11,17 +11,14 @@ data class Response(
     companion object
 }
 
-inline fun Response.Companion.UnprocessableEntity(body: () -> ResponseBody) = UnprocessableEntity(body())
-
 fun Response.Companion.UnprocessableEntity(body: ResponseBody) =
     Response(HttpStatusCode.UnprocessableEntity, body)
-
-inline fun Response.Companion.Unauthorized(body: () -> ResponseBody) = Unauthorized(body())
 
 fun Response.Companion.Unauthorized(body: ResponseBody) =
     Response(HttpStatusCode.Unauthorized, body)
 
-inline fun Response.Companion.OK(body: () -> ResponseBody) = OK(body())
-
 fun Response.Companion.OK(body: ResponseBody) =
     Response(HttpStatusCode.OK, body)
+
+fun Response.Companion.BadRequest(body: ResponseBody) =
+    Response(HttpStatusCode.BadRequest, body)

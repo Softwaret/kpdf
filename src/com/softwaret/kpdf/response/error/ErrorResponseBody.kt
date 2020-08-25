@@ -2,13 +2,11 @@ package com.softwaret.kpdf.response.error
 
 import com.softwaret.kpdf.response.ResponseBody
 
-sealed class ErrorResponseBody(val message: String) : ResponseBody {
+abstract class ErrorResponseBody(val errorMessage: String) : ResponseBody {
 
-    object AuthorizationFailed : ErrorResponseBody("AUTORIZATION FAILED")
+    object AuthorizationFailed : ErrorResponseBody("AuthorizationFailed")
 
-    object CannotRegisterUser : ErrorResponseBody("CANNOT REGISTER USER WITH GIVEN DATA")
+    object InputInvalid : ErrorResponseBody("InputInvalid")
 
-    object InputInvalid : ErrorResponseBody("INPUT INVALID")
-
-    object Unknown : ErrorResponseBody("UNKNOWN ERROR OCCURRED")
+    object Unknown : ErrorResponseBody("UnknownError")
 }
