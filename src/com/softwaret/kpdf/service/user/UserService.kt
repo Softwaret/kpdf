@@ -12,4 +12,3 @@ interface UserService : UserExistenceService {
 
     fun createUser(userTile: UserTile)
 }
-

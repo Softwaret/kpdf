@@ -4,7 +4,6 @@ import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingServiceImpl
 import com.softwaret.kpdf.service.token.JwtTokenService
 import com.softwaret.kpdf.service.token.TokenService
-import com.softwaret.kpdf.service.user.UserExistenceService
 import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.service.user.UserServiceImpl
 import com.softwaret.kpdf.service.validation.input.InputValidator

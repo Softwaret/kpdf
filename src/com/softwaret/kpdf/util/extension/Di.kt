@@ -9,4 +9,3 @@ import org.kodein.type.generic
 inline fun <reified T : Any> Routing.instance(tag: Any? = null) = di().direct.Instance<T>(generic(), tag)
 
 inline fun <reified T : Any> Application.instance(tag: Any? = null) = di().direct.Instance<T>(generic(), tag)
-

@@ -10,11 +10,10 @@ class JwtTokenService(
     private val algorithm: Algorithm,
     private val expirationPeriod: Milliseconds,
     private val issuer: String
-) : JWTTokenVeryfingServiceImpl(), TokenService{
+) : JWTTokenVeryfingServiceImpl(), TokenService {
 
     companion object {
         const val LOGIN_CLAIM_NAME = "login"
-
     }
 
     override fun generateToken(login: Login): String = JWT.create()
@@ -25,5 +24,4 @@ class JwtTokenService(
         .sign(algorithm)
 
     private fun obtainExpirationDate() = Date(System.currentTimeMillis() + expirationPeriod.value)
-
 }
