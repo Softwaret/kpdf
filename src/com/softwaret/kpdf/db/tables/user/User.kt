@@ -6,7 +6,6 @@ import com.softwaret.kpdf.model.inline.Password
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class User(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<User>(Users)
@@ -21,6 +20,3 @@ fun User.toUserTile() = UserTile(
     Password(password),
     Name(name)
 )
-
-fun User.Companion.doesUserExist(login: Login) =
-    transaction { find { Users.login eq login.value }.empty().not() }

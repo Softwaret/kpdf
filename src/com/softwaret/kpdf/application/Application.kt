@@ -5,14 +5,13 @@ package com.softwaret.kpdf.application
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.softwaret.kpdf.controller.bindControllers
 import com.softwaret.kpdf.db.H2Db
-import com.softwaret.kpdf.db.tables.user.User
-import com.softwaret.kpdf.db.tables.user.doesUserExist
 import com.softwaret.kpdf.interactor.bindInteractors
 import com.softwaret.kpdf.repository.bindPreferences
 import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
-import com.softwaret.kpdf.service.token.JwtTokenService
+import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
+import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
@@ -37,6 +36,12 @@ private const val EXAMPLE_APP_CONF_PATH = "resources/application-example.conf"
 private const val APP_CONF_PATH = "resources/application.conf"
 private const val CONFIG_ARG_NAME = "-config="
 
+private val Application.userService
+    get() = instance<UserService>()
+
+private val Application.jwtTokenVerifierService
+    get() = instance<JWTTokenVeryfingService>()
+
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addConfFileLocation(args))
 
 fun addConfFileLocation(args: Array<String>) = when {
@@ -48,9 +53,9 @@ fun addConfFileLocation(args: Array<String>) = when {
 
 @Suppress("unused")
 fun Application.main() {
+    bindDI()
     installFeatures()
     setupDb()
-    bindDI()
     bindRouting()
 }
 
@@ -74,8 +79,8 @@ private fun Application.installFeatures() {
     }
 }
 
-private fun validateCredential(jwtCredential: JWTCredential) =
-    if (User.doesUserExist(jwtCredential.loginFromPayload)) {
+private fun Application.validateCredential(jwtCredential: JWTCredential) =
+    if (userService.doesUserExist(jwtCredential.loginFromPayload)) {
         JWTPrincipal(jwtCredential.payload)
     } else {
         null
@@ -115,5 +120,5 @@ private fun Application.obtainParameters() = environment.config.run {
 }
 
 private fun Application.buildJwtVerifier() = environment.config.run {
-    JwtTokenService.buildVerifier(algorithm, issuer)
+    jwtTokenVerifierService.buildVerifier(algorithm, issuer)
 }

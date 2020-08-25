@@ -1,5 +1,7 @@
 package com.softwaret.kpdf.service
 
+import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
+import com.softwaret.kpdf.service.token.JWTTokenVeryfingServiceImpl
 import com.softwaret.kpdf.service.token.JwtTokenService
 import com.softwaret.kpdf.service.token.TokenService
 import com.softwaret.kpdf.service.user.UserService
@@ -24,6 +26,10 @@ fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
                 jwtParameters.issuer
             )
         }
+    }
+
+    bind<JWTTokenVeryfingService>() with singleton {
+        JWTTokenVeryfingServiceImpl()
     }
 
     bind<InputValidator>() with singleton { InputValidatorImpl(instance(), instance(), instance()) }

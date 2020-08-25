@@ -35,5 +35,8 @@ class UserServiceImpl(
         }
     }
 
+    override fun doesUserExist(login: Login) =
+        transaction { User.find { Users.login eq login.value }.empty().not() }
+
     private fun Password.hash() = hashRepository.hash(this.value)
 }
