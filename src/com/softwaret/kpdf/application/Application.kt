@@ -8,6 +8,7 @@ import com.softwaret.kpdf.db.H2Db
 import com.softwaret.kpdf.interactor.bindInteractors
 import com.softwaret.kpdf.repository.bindPreferences
 import com.softwaret.kpdf.routing.routes.login
+import com.softwaret.kpdf.routing.routes.publications
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
@@ -19,6 +20,7 @@ import com.softwaret.kpdf.util.parameters.bindParameters
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.auth.Authentication
+import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.JWTCredential
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
@@ -28,6 +30,7 @@ import io.ktor.features.DefaultHeaders
 import io.ktor.features.PartialContent
 import io.ktor.jackson.jackson
 import io.ktor.locations.Locations
+import io.ktor.routing.get
 import io.ktor.routing.routing
 import org.kodein.di.ktor.di
 import java.io.File
@@ -106,6 +109,7 @@ private fun Application.bindRouting() {
     routing {
         login(instance())
         register(instance())
+        publications(instance())
     }
 }
 
