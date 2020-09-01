@@ -1,5 +1,7 @@
 package com.softwaret.kpdf.service
 
+import com.softwaret.kpdf.service.publication.PublicationsService
+import com.softwaret.kpdf.service.publication.PublicationsServiceImpl
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingServiceImpl
 import com.softwaret.kpdf.service.token.JwtTokenService
@@ -33,4 +35,6 @@ fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
     }
 
     bind<InputValidator>() with singleton { InputValidatorImpl(instance(), instance(), instance()) }
+
+    bind<PublicationsService>() with singleton { PublicationsServiceImpl() }
 }

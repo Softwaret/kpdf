@@ -7,9 +7,9 @@ import org.jetbrains.exposed.dao.IntEntityClass
 class Pdf(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Pdf>(Pdfs)
 
-    var pdf by Pdfs.pdf
+    var blobPdf by Pdfs.blobPdf
 }
 
 fun Pdf.toPdfTile() = PdfTile(
-    inputStream = pdf.binaryStream
+    inputStream = blobPdf.binaryStream
 )

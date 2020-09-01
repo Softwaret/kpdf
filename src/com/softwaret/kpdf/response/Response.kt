@@ -22,3 +22,6 @@ fun Response.Companion.OK(body: ResponseBody) =
 
 fun Response.Companion.BadRequest(body: ResponseBody) =
     Response(HttpStatusCode.BadRequest, body)
+
+fun Response.Companion.NotFound(body: ResponseBody) =
+    Response(HttpStatusCode.NotFound, body)
