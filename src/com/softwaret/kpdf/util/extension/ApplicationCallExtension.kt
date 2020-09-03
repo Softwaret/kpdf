@@ -5,4 +5,7 @@ import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.principal
 
 val ApplicationCall.userLoginFromPrincipal
-    get() = checkNotNull(principal<JWTPrincipal>()?.payload?.userLogin) { "User authentication required" }
+    get() = run {
+        val login = principal<JWTPrincipal>()?.payload?.userLogin
+        checkNotNull(login) { "User authentication required" }
+    }
