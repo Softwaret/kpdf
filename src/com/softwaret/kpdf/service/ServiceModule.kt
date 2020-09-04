@@ -1,13 +1,12 @@
 package com.softwaret.kpdf.service
 
+import com.softwaret.kpdf.validation.InputValidator
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingServiceImpl
 import com.softwaret.kpdf.service.token.JwtTokenService
 import com.softwaret.kpdf.service.token.TokenService
 import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.service.user.UserServiceImpl
-import com.softwaret.kpdf.service.validation.input.InputValidator
-import com.softwaret.kpdf.service.validation.input.InputValidatorImpl
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -32,5 +31,9 @@ fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
         JWTTokenVeryfingServiceImpl()
     }
 
-    bind<InputValidator>() with singleton { InputValidatorImpl(instance(), instance(), instance()) }
+    bind<InputValidator>() with singleton {
+        InputValidator(
+            di
+        )
+    }
 }
