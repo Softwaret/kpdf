@@ -16,6 +16,7 @@ import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import com.softwaret.kpdf.util.parameters.bindParameters
+import com.softwaret.kpdf.validation.bindValidators
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.auth.Authentication
@@ -95,6 +96,7 @@ private fun Application.bindDI() {
         bindParameters(
             salt = environment.config.stringProperty("config.SALT")
         )
+        bindValidators()
         bindControllers()
         bindInteractors()
         bindServices(obtainParameters())
