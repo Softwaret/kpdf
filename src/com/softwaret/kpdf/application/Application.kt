@@ -46,7 +46,7 @@ private val Application.jwtTokenVerifierService
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addConfFileLocation(args))
 
-fun addConfFileLocation(args: Array<String>) = when {
+private fun addConfFileLocation(args: Array<String>) = when {
     args.any { it.contains(CONFIG_ARG_NAME) } -> args
     File(APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$APP_CONF_PATH"
     File(EXAMPLE_APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$EXAMPLE_APP_CONF_PATH"
