@@ -7,6 +7,10 @@ import java.io.InputStream
 data class PdfTile(
     val inputStream: InputStream
 ) {
-    val pdfBase64
-        get() = PdfBase64(inputStream.readString())
+    val pdfBase64: PdfBase64
+        get() = run {
+            val res = PdfBase64(inputStream.readString())
+            inputStream.reset()
+            return res
+        }
 }
