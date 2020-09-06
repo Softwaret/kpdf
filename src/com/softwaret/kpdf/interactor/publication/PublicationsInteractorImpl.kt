@@ -13,4 +13,10 @@ class PublicationsInteractorImpl(
 
     override fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login) =
         publicationsService.insertPublication(publicationName, pdfBase64, login)
+
+    override fun deletePublication(id: Id) =
+        publicationsService.deletePublication(id)
+
+    override fun updatePublication(id: Id, pdfBase64: PdfBase64) =
+        publicationsService.updatePublication(id, pdfBase64)
 }
