@@ -33,14 +33,14 @@ class PublicationsControllerImplTest {
     }
 
     @Test
-    fun `obtainPublication should return NotFound on missing publication`() {
+    fun `obtainPublication should return BadRequest on missing publication`() {
         val id = Id(1)
         every { interactor.obtainPublicationOrNull(id) } returns null
 
         val result = controller.obtainPublication(id)
 
         verify(exactly = 1) { interactor.obtainPublicationOrNull(id) }
-        assertTrue { result.code == HttpStatusCode.NotFound }
+        assertTrue { result.code == HttpStatusCode.BadRequest }
     }
 
     @Test
