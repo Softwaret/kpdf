@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.softwaret.kpdf.controller.bindControllers
 import com.softwaret.kpdf.db.H2Db
 import com.softwaret.kpdf.interactor.bindInteractors
-import com.softwaret.kpdf.repository.bindPreferences
+import com.softwaret.kpdf.repository.bindRepositories
 import com.softwaret.kpdf.routing.routes.login
 import com.softwaret.kpdf.routing.routes.publications
 import com.softwaret.kpdf.routing.routes.register
@@ -29,7 +29,6 @@ import io.ktor.features.DefaultHeaders
 import io.ktor.features.PartialContent
 import io.ktor.jackson.jackson
 import io.ktor.locations.Locations
-import io.ktor.routing.get
 import io.ktor.routing.routing
 import org.kodein.di.ktor.di
 import java.io.File
@@ -100,7 +99,7 @@ private fun Application.bindDI() {
         bindControllers()
         bindInteractors()
         bindServices(obtainParameters())
-        bindPreferences()
+        bindRepositories()
     }
 }
 

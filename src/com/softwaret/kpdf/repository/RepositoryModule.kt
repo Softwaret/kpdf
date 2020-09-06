@@ -14,7 +14,7 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
 
-fun DI.MainBuilder.bindPreferences() {
+fun DI.MainBuilder.bindRepositories() {
 
     bind<LoginValidationRepository>() with singleton { LoginValidationRepositoryImpl() }
 
