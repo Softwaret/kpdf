@@ -24,7 +24,6 @@ internal inline fun <reified T : Any> MockKMatcherScope.anyValue(): T =
     if (T::class.isInline) anyInlineValue()
     else any()
 
-
 internal inline fun <reified T : Any> MockKMatcherScope.anyInlineValue(): T {
     val valueConstructor = T::class.primaryConstructor!!
     val valueType = valueConstructor.parameters[0].type.classifier as KClass<*>
@@ -35,5 +34,5 @@ internal inline fun <reified T : Any> MockKMatcherScope.anyInlineValue(): T {
 
 internal val KClass<*>.isInline: Boolean
     get() = !isData &&
-            primaryConstructor?.parameters?.size == 1 &&
-            java.declaredMethods.any { it.name == "box-impl" }
+        primaryConstructor?.parameters?.size == 1 &&
+        java.declaredMethods.any { it.name == "box-impl" }
