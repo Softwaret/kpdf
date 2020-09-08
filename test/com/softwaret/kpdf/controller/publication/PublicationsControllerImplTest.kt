@@ -93,4 +93,40 @@ internal class PublicationsControllerImplTest {
         assertTrue { (result.body as PublicationResponseBody).name == publication.name }
         assertTrue { (result.body as PublicationResponseBody).pdf.value == publication.pdf.pdfBase64.value }
     }
+
+    @Test
+    fun `deletePublication should return BadRequest on missing publication`() {
+        every { interactor.obtainPublicationOrNull(anyValue()) } returns null
+        val result = controller.deletePublication(Id(1))
+        assertEquals(HttpStatusCode.BadRequest, result.code)
+    }
+
+    @Test
+    fun `updatePublication should return BadRequest on missing publication`() {
+        every { interactor.obtainPublicationOrNull(anyValue()) } returns null
+        val result = controller.updatePublication(Id(1), testTile.pdf.pdfBase64)
+        assertEquals(HttpStatusCode.BadRequest, result.code)
+    }
+
+    @Test
+    fun `deletePublication should return OK on deleted publication`() {
+        val id = Id(1)
+        every { interactor.obtainPublicationOrNull(anyValue()) } returns testTile
+
+        val result = controller.deletePublication(id)
+
+        verify(exactly = 1) { interactor.deletePublication(id) }
+        assertEquals(HttpStatusCode.OK, result.code)
+    }
+
+    @Test
+    fun `updatePublication should return OK on updated publication`() {
+        val id = Id(1)
+        every { interactor.obtainPublicationOrNull(anyValue()) } returns testTile
+
+        val result = controller.updatePublication(id, testTile.pdf.pdfBase64)
+
+        verify(exactly = 1) { interactor.updatePublication(id, testTile.pdf.pdfBase64) }
+        assertEquals(HttpStatusCode.OK, result.code)
+    }
 }
