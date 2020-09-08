@@ -18,10 +18,8 @@ class PublicationsControllerImpl(
             Response.OK(PublicationResponseBody(id, it.name, it.author.login, it.pdf.pdfBase64))
         } ?: Response.BadRequest(EmptyResponseBody)
 
-    override fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login): Response {
-        val newId = interactor.insertPublication(publicationName, pdfBase64, login)
-        return obtainPublication(newId)
-    }
+    override fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login) =
+        obtainPublication(id = interactor.insertPublication(publicationName, pdfBase64, login))
 
     override fun deletePublication(id: Id) =
         ifPublicationExists(id) { interactor.deletePublication(id) }
