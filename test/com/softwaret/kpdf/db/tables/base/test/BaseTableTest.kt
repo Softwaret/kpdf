@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.BeforeEach
 
 abstract class BaseTableTest {
+
     companion object {
         private const val URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"
         private const val DRIVER = "org.h2.Driver"

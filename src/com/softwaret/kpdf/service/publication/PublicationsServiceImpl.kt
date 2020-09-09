@@ -13,6 +13,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.rowset.serial.SerialBlob
 
 class PublicationsServiceImpl : PublicationsService {
+
     override fun obtainPublicationOrNull(id: Id) =
         transaction { Publication.findById(id.value)?.toPublicationTile() }
 

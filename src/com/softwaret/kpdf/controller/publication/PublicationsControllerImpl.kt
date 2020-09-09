@@ -13,6 +13,7 @@ import com.softwaret.kpdf.response.success.PublicationResponseBody
 class PublicationsControllerImpl(
     private val interactor: PublicationsInteractor
 ) : PublicationsController {
+
     override fun obtainPublication(id: Id) =
         interactor.obtainPublicationOrNull(id)?.let {
             Response.OK(PublicationResponseBody(id, it.name, it.author.login, it.pdf.pdfBase64))

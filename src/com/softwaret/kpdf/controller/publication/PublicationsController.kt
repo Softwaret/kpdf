@@ -8,5 +8,6 @@ import com.softwaret.kpdf.response.Response
 interface PublicationsController {
 
     fun obtainPublication(id: Id): Response
+
     fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login): Response
 }

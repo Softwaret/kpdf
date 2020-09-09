@@ -6,6 +6,8 @@ import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.PdfBase64
 
 interface PublicationsService {
+
     fun obtainPublicationOrNull(id: Id): PublicationTile?
+
     fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login): Id
 }
