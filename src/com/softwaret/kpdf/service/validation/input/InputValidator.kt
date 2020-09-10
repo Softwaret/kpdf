@@ -7,5 +7,4 @@ import com.softwaret.kpdf.repository.validation.input.password.PasswordValidator
 interface InputValidator :
     PasswordValidator,
     NameValidator,
-
     LoginValidator

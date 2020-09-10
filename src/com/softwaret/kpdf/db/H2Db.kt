@@ -1,5 +1,7 @@
 package com.softwaret.kpdf.db
 
+import com.softwaret.kpdf.db.tables.pdf.Pdfs
+import com.softwaret.kpdf.db.tables.publication.Publications
 import com.softwaret.kpdf.db.tables.user.Users
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -16,7 +18,7 @@ object H2Db {
         Database.connect(URL, driver = DRIVER)
         transaction {
             addLogger(StdOutSqlLogger)
-            SchemaUtils.create(Users)
+            SchemaUtils.create(Users, Pdfs, Publications)
         }
     }
 }
