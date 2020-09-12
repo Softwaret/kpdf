@@ -8,6 +8,7 @@ import com.softwaret.kpdf.service.publication.PublicationsService
 class PublicationsInteractorImpl(
     private val publicationsService: PublicationsService
 ) : PublicationsInteractor {
+
     override fun obtainPublicationOrNull(id: Id) =
         publicationsService.obtainPublicationOrNull(id)
 

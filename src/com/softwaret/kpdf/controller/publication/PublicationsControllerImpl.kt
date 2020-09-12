@@ -27,11 +27,11 @@ class PublicationsControllerImpl(
     override fun updatePublication(id: Id, pdfBase64: PdfBase64) =
         ifPublicationExists(id) { interactor.updatePublication(id, pdfBase64) }
 
-    private fun ifPublicationExists(id: Id, action: () -> Unit) =
+    private fun ifPublicationExists(id: Id, publicationFoundAction: () -> Unit) =
         if (interactor.obtainPublicationOrNull(id) == null) {
             Response.BadRequest(EmptyResponseBody)
         } else {
-            action()
+            publicationFoundAction()
             Response.OK(EmptyResponseBody)
         }
 }

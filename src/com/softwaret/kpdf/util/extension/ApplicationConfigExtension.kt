@@ -6,17 +6,14 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.softwaret.kpdf.model.inline.Milliseconds
 import io.ktor.config.ApplicationConfig
 
-val ApplicationConfig.algorithmPath
-    get() = "jwt.SECRET"
+private const val algorithmPath = "jwt.SECRET"
+private const val issuerPath = "jwt.ISSUER"
+private const val validityPath = "jwt.VALIDITY_MS"
+private const val realmPath = "jwt.REALM"
 
-val ApplicationConfig.issuerPath
-    get() = "jwt.ISSUER"
+fun ApplicationConfig.stringProperty(path: String) = property(path).getString()
 
-val ApplicationConfig.validityPath
-    get() = "jwt.VALIDITY_MS"
-
-val ApplicationConfig.realmPath
-    get() = "jwt.REALM"
+fun ApplicationConfig.longProperty(path: String) = property(path).getString().toLong()
 
 val ApplicationConfig.algorithm: Algorithm
     get() = Algorithm.HMAC512(stringProperty(algorithmPath))

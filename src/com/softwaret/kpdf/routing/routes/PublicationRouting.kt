@@ -14,23 +14,23 @@ import io.ktor.routing.Routing
 fun Routing.publications(controller: PublicationsController) {
 
     @Location("/publications")
-    data class GetPublicationLocation(val publicationId: Int)
+    data class GetPublication(val publicationId: Int)
 
     @Location("/publications")
-    data class PostPublicationLocation(val name: String, val pdfBase64: String)
+    data class PostPublication(val name: String, val pdfBase64: String)
 
     @Location("/publications")
-    data class PutPublicationLocation(val publicationId: Int, val pdfBase64: String)
+    data class PutPublication(val publicationId: Int, val pdfBase64: String)
 
     @Location("/publications")
-    data class DeletePublicationLocation(val publicationId: Int)
+    data class DeletePublication(val publicationId: Int)
 
     authenticate {
-        get<GetPublicationLocation> { getPublicationModel ->
+        get<GetPublication> { getPublicationModel ->
             call.respondWith(controller.obtainPublication(Id(getPublicationModel.publicationId)))
         }
 
-        post<PostPublicationLocation> { postPublicationLocation ->
+        post<PostPublication> { postPublicationLocation ->
             call.respondWith(
                 controller.insertPublication(
                     postPublicationLocation.name,
@@ -40,7 +40,7 @@ fun Routing.publications(controller: PublicationsController) {
             )
         }
 
-        put<PutPublicationLocation> { putPublicationLocation ->
+        put<PutPublication> { putPublicationLocation ->
             call.respondWith(
                 controller.updatePublication(
                     Id(putPublicationLocation.publicationId),
@@ -49,7 +49,7 @@ fun Routing.publications(controller: PublicationsController) {
             )
         }
 
-        delete<DeletePublicationLocation> { deletePublicationLocation ->
+        delete<DeletePublication> { deletePublicationLocation ->
             call.respondWith(
                 controller.deletePublication(Id(deletePublicationLocation.publicationId))
             )
