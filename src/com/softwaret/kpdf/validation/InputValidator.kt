@@ -15,7 +15,7 @@ class InputValidator(
         (di.direct.instance<Validator<*>>(tag = T::class.java) as? Validator<T>)?.validate(param)
             ?: ValidationResult.GenericError
 
-    inline fun <reified T> T.isValid() =
+    inline fun <reified T : Any> T.isValid() =
         validate(this).run {
             takeIf { it == ValidationResult.Result }?.results?.isEmpty() ?: this == ValidationResult.Valid
         }
