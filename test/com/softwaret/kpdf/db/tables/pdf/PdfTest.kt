@@ -1,6 +1,6 @@
 package com.softwaret.kpdf.db.tables.pdf
 
-import com.softwaret.kpdf.db.tables.base.test.BaseTableTest
+import com.softwaret.kpdf.base.test.BaseTableTest
 import com.softwaret.kpdf.util.extension.readString
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

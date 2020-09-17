@@ -1,4 +1,4 @@
-package com.softwaret.kpdf.db.tables.base.test
+package com.softwaret.kpdf.base.test
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
