@@ -23,16 +23,21 @@ class PublicationsControllerImpl(
         obtainPublication(id = interactor.insertPublication(publicationName, pdfBase64, login))
 
     override fun deletePublication(id: Id) =
-        ifPublicationExists(id) { interactor.deletePublication(id) }
+        onPublicationExists(id) { interactor.deletePublication(id) }
 
     override fun updatePublication(id: Id, pdfBase64: PdfBase64) =
-        ifPublicationExists(id) { interactor.updatePublication(id, pdfBase64) }
+        onPublicationExists(id) { interactor.updatePublication(id, pdfBase64) }
 
-    private fun ifPublicationExists(id: Id, publicationFoundAction: () -> Unit) =
+    private fun onPublicationExists(
+        id: Id,
+        publicationExistsResponse: Response = Response.OK(EmptyResponseBody),
+        publicationDoesNotExistResponse: Response = Response.BadRequest(EmptyResponseBody),
+        publicationFoundAction: () -> Unit
+    ) =
         if (interactor.obtainPublicationOrNull(id) == null) {
-            Response.BadRequest(EmptyResponseBody)
+            publicationDoesNotExistResponse
         } else {
             publicationFoundAction()
-            Response.OK(EmptyResponseBody)
+            publicationExistsResponse
         }
 }
