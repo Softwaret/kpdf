@@ -9,6 +9,7 @@ import com.softwaret.kpdf.response.OK
 import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.success.EmptyResponseBody
 import com.softwaret.kpdf.response.success.PublicationResponseBody
+import com.softwaret.kpdf.util.exception.PublicationException
 
 class PublicationsControllerImpl(
     private val interactor: PublicationsInteractor
@@ -33,11 +34,19 @@ class PublicationsControllerImpl(
         publicationExistsResponse: Response = Response.OK(EmptyResponseBody),
         publicationDoesNotExistResponse: Response = Response.BadRequest(EmptyResponseBody),
         publicationFoundAction: () -> Unit
-    ) =
-        if (interactor.obtainPublicationOrNull(id) == null) {
-            publicationDoesNotExistResponse
-        } else {
+    ) = if (interactor.obtainPublicationOrNull(id) == null) {
+        publicationDoesNotExistResponse
+    } else {
+        try {
             publicationFoundAction()
             publicationExistsResponse
+        } catch (ex: PublicationException) {
+            handlePublicationException(ex)
+        }
+    }
+
+    private fun handlePublicationException(ex: PublicationException) =
+        when (ex) {
+            PublicationException.PublicationNotFound -> Response.BadRequest(EmptyResponseBody)
         }
 }
