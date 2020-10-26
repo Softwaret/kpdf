@@ -8,6 +8,7 @@ import com.softwaret.kpdf.db.tables.user.Users
 import com.softwaret.kpdf.model.inline.Id
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.PdfBase64
+import com.softwaret.kpdf.util.exception.PublicationException
 import com.softwaret.kpdf.util.extension.asId
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.rowset.serial.SerialBlob
@@ -25,4 +26,18 @@ class PublicationsServiceImpl : PublicationsService {
                 pdf = Pdf.new { blobPdf = SerialBlob(pdfBase64.value.toByteArray()) }
             }
         }.id.value.asId()
+
+    override fun deletePublication(id: Id) {
+        transaction {
+            Publication.findById(id.value)?.delete() ?: throw PublicationException.PublicationNotFound
+        }
+    }
+
+    override fun updatePublication(id: Id, pdfBase64: PdfBase64) {
+        transaction {
+            Publication.findById(id.value)?.let {
+                it.pdf.blobPdf = SerialBlob(pdfBase64.value.toByteArray())
+            } ?: throw PublicationException.PublicationNotFound
+        }
+    }
 }

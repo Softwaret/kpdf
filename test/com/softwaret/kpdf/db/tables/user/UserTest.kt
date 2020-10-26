@@ -1,7 +1,6 @@
 package com.softwaret.kpdf.db.tables.user
 
-import com.softwaret.kpdf.db.tables.base.test.BaseTableTest
-import org.jetbrains.exposed.exceptions.ExposedSQLException
+import com.softwaret.kpdf.base.test.BaseTableTest
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
@@ -24,18 +23,6 @@ class UserTest : BaseTableTest() {
             }
 
             assertNotNull(User.findById(createdUser.id))
-        }
-    }
-
-    @Test
-    fun `create new user should fail when missing arguments`() {
-        assertThrows<ExposedSQLException> {
-            transaction {
-                User.new {
-                    login = "login"
-                    name = "name"
-                }
-            }
         }
     }
 

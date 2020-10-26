@@ -10,4 +10,8 @@ interface PublicationsService {
     fun obtainPublicationOrNull(id: Id): PublicationTile?
 
     fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login): Id
+
+    fun deletePublication(id: Id)
+
+    fun updatePublication(id: Id, pdfBase64: PdfBase64)
 }

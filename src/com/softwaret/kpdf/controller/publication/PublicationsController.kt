@@ -10,4 +10,8 @@ interface PublicationsController {
     fun obtainPublication(id: Id): Response
 
     fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login): Response
+
+    fun updatePublication(id: Id, pdfBase64: PdfBase64): Response
+
+    fun deletePublication(id: Id): Response
 }
