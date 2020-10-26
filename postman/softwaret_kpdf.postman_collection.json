@@ -8,25 +8,109 @@
 	"item": [
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "77b6ca0a-92fd-423e-9372-705a2099e53e",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"postman.setEnvironmentVariable(\"TOKEN\", jsonData.token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"login\": \"jan\",\n    \"password\": \"jan_pswd\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{BASE_PATH}}/login",
+					"raw": "{{BASE_PATH}}/login?login=jan_ln&password=jan_psw",
 					"host": [
 						"{{BASE_PATH}}"
 					],
 					"path": [
 						"login"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "jan_ln"
+						},
+						{
+							"key": "password",
+							"value": "jan_psw"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publication by id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_PATH}}/publications?publicationId=1",
+					"host": [
+						"{{BASE_PATH}}"
+					],
+					"path": [
+						"publications"
+					],
+					"query": [
+						{
+							"key": "publicationId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert publication",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_PATH}}/publications?name=aaa&pdfBase64=asd",
+					"host": [
+						"{{BASE_PATH}}"
+					],
+					"path": [
+						"publications"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "aaa"
+						},
+						{
+							"key": "pdfBase64",
+							"value": "asd"
+						}
 					]
 				}
 			},
@@ -37,22 +121,27 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"jan_l\",\n    \"password\": \"jan_pswd\",\n    \"login\": \"jan\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{BASE_PATH}}/register",
+					"raw": "{{BASE_PATH}}/register?login=jan_ln&password=jan_psw&name=jan",
 					"host": [
 						"{{BASE_PATH}}"
 					],
 					"path": [
 						"register"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "jan_ln"
+						},
+						{
+							"key": "password",
+							"value": "jan_psw"
+						},
+						{
+							"key": "name",
+							"value": "jan"
+						}
 					]
 				}
 			},

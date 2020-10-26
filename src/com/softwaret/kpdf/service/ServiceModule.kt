@@ -31,9 +31,7 @@ fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
         JWTTokenVeryfingServiceImpl()
     }
 
-    bind<InputValidator>() with singleton {
-        InputValidator(
-            di
-        )
-    }
+    bind<InputValidator>() with singleton { InputValidatorImpl(instance(), instance(), instance()) }
+
+    bind<PublicationsService>() with singleton { PublicationsServiceImpl() }
 }

@@ -1,0 +1,4 @@
+codecov:
+  on: push, pull_request
+  ignore:
+    - "*Module.kt"

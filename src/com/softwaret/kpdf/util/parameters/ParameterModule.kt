@@ -5,8 +5,6 @@ import org.kodein.di.with
 
 const val SALT = "SALT"
 
-fun DI.MainBuilder.bindParameters(
-    salt: String
-) {
+fun DI.MainBuilder.bindParameters(salt: String) {
     constant(tag = SALT) with salt
 }

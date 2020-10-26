@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.softwaret.kpdf.controller.bindControllers
 import com.softwaret.kpdf.db.H2Db
 import com.softwaret.kpdf.interactor.bindInteractors
-import com.softwaret.kpdf.repository.bindPreferences
+import com.softwaret.kpdf.repository.bindRepositories
 import com.softwaret.kpdf.routing.routes.login
+import com.softwaret.kpdf.routing.routes.publications
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
@@ -45,7 +46,7 @@ private val Application.jwtTokenVerifierService
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addConfFileLocation(args))
 
-fun addConfFileLocation(args: Array<String>) = when {
+private fun addConfFileLocation(args: Array<String>) = when {
     args.any { it.contains(CONFIG_ARG_NAME) } -> args
     File(APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$APP_CONF_PATH"
     File(EXAMPLE_APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$EXAMPLE_APP_CONF_PATH"
@@ -100,7 +101,7 @@ private fun Application.bindDI() {
         bindControllers()
         bindInteractors()
         bindServices(obtainParameters())
-        bindPreferences()
+        bindRepositories()
     }
 }
 
@@ -108,6 +109,7 @@ private fun Application.bindRouting() {
     routing {
         login(instance())
         register(instance())
+        publications(instance())
     }
 }
 
