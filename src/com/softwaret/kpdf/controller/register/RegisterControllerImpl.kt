@@ -10,8 +10,8 @@ import com.softwaret.kpdf.response.OK
 import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.RegisterResponseBody
-import com.softwaret.kpdf.service.validation.input.InputValidator
-import com.softwaret.kpdf.util.extension.areAllNull
+import com.softwaret.kpdf.validation.InputValidator
+import com.softwaret.kpdf.validation.result.ValidationResult
 
 class RegisterControllerImpl(
     private val interactor: RegisterInteractor,
@@ -33,7 +33,11 @@ class RegisterControllerImpl(
         }
 
     private fun isInputValid(login: Login, password: Password, name: Name) =
-        inputValidator.run { areAllNull(validateLogin(login), validateName(name), validatePassword(password)) }
+        inputValidator.run {
+            listOf(validate(login), validate(name), validate(password)).all {
+                it is ValidationResult.Valid
+            }
+        }
 
     private fun doesUserExist(login: Login) = interactor.doesUserExists(login)
 
