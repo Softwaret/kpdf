@@ -16,5 +16,5 @@ sealed class ValidationResult {
 
     object Valid : ValidationResult()
 
-    object Result : ValidationResult()
+    class Result : ValidationResult()
 }
