@@ -10,8 +10,7 @@ import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.Unauthorized
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.LoginResponseBody
-import com.softwaret.kpdf.service.validation.input.InputValidator
-import com.softwaret.kpdf.util.extension.areAllNull
+import com.softwaret.kpdf.validation.InputValidator
 
 class LoginControllerImpl(
     private val interactor: LoginInteractor,
@@ -32,9 +31,10 @@ class LoginControllerImpl(
             }
         }
 
-    private fun isInputValid(login: Login, password: Password) = inputValidator.run {
-        areAllNull(validateLogin(login), validatePassword(password))
-    }
+    private fun isInputValid(login: Login, password: Password) =
+        inputValidator.run {
+            login.isValid()
+        }
 
     private fun userExistsAndPasswordIsValid(login: Login, password: Password) =
         interactor.areCredentialsValid(login, password)
