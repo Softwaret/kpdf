@@ -9,7 +9,7 @@ import com.softwaret.kpdf.validation.validators.input.BaseValidator
 class PasswordValidator(
     private val blankValidator: BlankValidator,
     private val emptyValidator: EmptyValidator
-) : BaseValidator(), Validator<Password> {
+) : BaseValidator, Validator<Password> {
 
     override fun validate(field: Password) =
         validate(

@@ -6,4 +6,3 @@ interface Validator<T> {
 
     fun validate(field: T): ValidationResult
 }
-

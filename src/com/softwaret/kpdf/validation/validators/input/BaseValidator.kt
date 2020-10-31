@@ -2,9 +2,9 @@ package com.softwaret.kpdf.validation.validators.input
 
 import com.softwaret.kpdf.validation.result.ValidationResult
 
-abstract class BaseValidator {
+interface BaseValidator {
 
-    protected fun validate(vararg validationResult: ValidationResult) =
+    fun validate(vararg validationResult: ValidationResult) =
         ValidationResult.Result.apply {
             addResults(validationResult.filter { it != ValidationResult.Valid })
         }

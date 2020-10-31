@@ -36,4 +36,3 @@ fun DI.MainBuilder.bindValidators() {
         )
     }
 }
-
