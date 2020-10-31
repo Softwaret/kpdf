@@ -11,6 +11,7 @@ class InputValidator(
     override val di: DI
 ) : DIAware {
 
+    @Suppress("UNCHECKED_CAST")
     inline fun <reified T> validate(param: T) =
         (di.direct.instance<Validator<*>>(tag = T::class.java) as? Validator<T>)?.validate(param)
             ?: ValidationResult.GenericError
