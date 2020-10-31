@@ -32,9 +32,7 @@ class LoginControllerImpl(
         }
 
     private fun isInputValid(login: Login, password: Password) =
-        inputValidator.run {
-            login.isValid()
-        }
+        inputValidator.run { login.isValid() && password.isValid() }
 
     private fun userExistsAndPasswordIsValid(login: Login, password: Password) =
         interactor.areCredentialsValid(login, password)

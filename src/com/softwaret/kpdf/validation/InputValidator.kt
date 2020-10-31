@@ -17,7 +17,11 @@ class InputValidator(
             ?: ValidationResult.GenericError
 
     inline fun <reified T : Any> T.isValid() =
-        validate(this).run {
-            takeIf { it == ValidationResult.Result }?.results?.isEmpty() ?: this == ValidationResult.Valid
+        validate(this@isValid).let { result ->
+            if (result is ValidationResult.Result) {
+                result.results.isEmpty()
+            } else {
+                result == ValidationResult.Valid
+            }
         }
 }
