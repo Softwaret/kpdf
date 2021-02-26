@@ -13,8 +13,12 @@ class InputValidator(
 
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T> validate(param: T) =
-        (di.direct.instance<Validator<*>>(tag = T::class.java) as? Validator<T>)?.validate(param)
-            ?: ValidationResult.GenericError
+        try {
+            (di.direct.instance<Validator<*>>(tag = T::class.java) as? Validator<T>)?.validate(param)
+                ?: ValidationResult.GenericError
+        } catch (e: DI.NotFoundException) {
+            ValidationResult.GenericError
+        }
 
     inline fun <reified T : Any> T.isValid() =
         validate(this@isValid).let { result ->
