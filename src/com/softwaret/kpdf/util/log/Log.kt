@@ -5,7 +5,7 @@ import mu.KotlinLogging
 
 object Log {
 
-    private const val loggerName = "KPDF-DEBUG: "
+    private const val loggerName = "KPDF"
 
     private val logger: KLogger by lazy { KotlinLogging.logger(loggerName) }
 
