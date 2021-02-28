@@ -10,9 +10,9 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
-    id "org.jlleitschuh.gradle.ktlint" version "$ktlint_version"
-    id "org.jetbrains.dokka" version "$dokka_version"
+    id "io.gitlab.arturbosch.detekt" version "1.11.0-RC1"
+    id "org.jlleitschuh.gradle.ktlint" version "9.3.0"
+    id "org.jetbrains.dokka" version "0.10.1"
     id "jacoco"
 }
 
