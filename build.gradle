@@ -98,6 +98,7 @@ detekt {
     input = files(rootProject.rootDir)
     buildUponDefaultConfig = true
     config.setFrom(files("$rootDir/resources/detekt.yml"))
+    autoCorrect = true
 }
 
 dokka {
