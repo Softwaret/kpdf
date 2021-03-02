@@ -62,6 +62,9 @@ dependencies {
     // Log
     implementation "ch.qos.logback:logback-classic:$logback_version"
 
+    // Log in non framework classes
+    implementation "io.github.microutils:kotlin-logging:$micro_logger_version"
+
     // Kodein DI
     implementation "org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version"
 
@@ -95,6 +98,7 @@ detekt {
     input = files(rootProject.rootDir)
     buildUponDefaultConfig = true
     config.setFrom(files("$rootDir/resources/detekt.yml"))
+    autoCorrect = true
 }
 
 dokka {

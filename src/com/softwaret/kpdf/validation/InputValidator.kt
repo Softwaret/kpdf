@@ -1,5 +1,6 @@
 package com.softwaret.kpdf.validation
 
+import com.softwaret.kpdf.util.log.Log
 import com.softwaret.kpdf.validation.result.ValidationResult
 import com.softwaret.kpdf.validation.validators.Validator
 import org.kodein.di.DI
@@ -13,8 +14,15 @@ class InputValidator(
 
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T> validate(param: T) =
-        (di.direct.instance<Validator<*>>(tag = T::class.java) as? Validator<T>)?.validate(param)
-            ?: ValidationResult.GenericError
+        try {
+            (di.direct.instance<Validator<*>>(tag = T::class.java) as? Validator<T>)?.validate(param)
+                ?: ValidationResult.GenericError
+        } catch (e: DI.NotFoundException) {
+            Log.d {
+                "No available validator binding found, ${e.message}"
+            }
+            ValidationResult.GenericError
+        }
 
     inline fun <reified T : Any> T.isValid() =
         validate(this@isValid).let { result ->
