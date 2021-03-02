@@ -1,15 +1,20 @@
 package com.softwaret.kpdf.service.publication
 
 import com.softwaret.kpdf.db.tables.publication.PublicationTile
-import com.softwaret.kpdf.model.inline.Id
-import com.softwaret.kpdf.model.inline.Login
-import com.softwaret.kpdf.model.inline.PdfBase64
+import com.softwaret.kpdf.model.inline.*
 
 interface PublicationsService {
 
     fun obtainPublicationOrNull(id: Id): PublicationTile?
 
-    fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login): Id
+    fun obtainPublicationOrNull(login: Login, publicationName: PublicationName) : PublicationTile?
+
+    fun insertPublication(
+        publicationName: PublicationName,
+        pdfBase64: PdfBase64,
+        login: Login,
+        description: Description
+    ): Id
 
     fun deletePublication(id: Id)
 
