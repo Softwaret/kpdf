@@ -1,12 +1,9 @@
 package com.softwaret.kpdf.controller.publication
 
 import com.softwaret.kpdf.interactor.publication.PublicationsInteractor
-import com.softwaret.kpdf.model.inline.Id
-import com.softwaret.kpdf.model.inline.Login
-import com.softwaret.kpdf.model.inline.PdfBase64
-import com.softwaret.kpdf.response.BadRequest
-import com.softwaret.kpdf.response.OK
-import com.softwaret.kpdf.response.Response
+import com.softwaret.kpdf.model.inline.*
+import com.softwaret.kpdf.response.*
+import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.EmptyResponseBody
 import com.softwaret.kpdf.response.success.PublicationResponseBody
 import com.softwaret.kpdf.util.exception.PublicationException
@@ -17,11 +14,39 @@ class PublicationsControllerImpl(
 
     override fun obtainPublication(id: Id) =
         interactor.obtainPublicationOrNull(id)?.let {
-            Response.OK(PublicationResponseBody(id, it.name, it.author.login, it.pdf.pdfBase64))
+            Response.OK(
+                PublicationResponseBody(
+                    id,
+                    it.name,
+                    it.author.login,
+                    it.pdf.pdfBase64,
+                    it.metadata.description
+                )
+            )
         } ?: Response.BadRequest(EmptyResponseBody)
 
-    override fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login) =
-        obtainPublication(id = interactor.insertPublication(publicationName, pdfBase64, login))
+    override fun insertPublication(
+        publicationName: PublicationName,
+        pdfBase64: PdfBase64,
+        login: Login,
+        description: Description
+    ): Response {
+        if (interactor.obtainPublicationOrNull(login, publicationName) != null) {
+            return Response.Conflict(ErrorResponseBody.ResourceAlreadyExists)
+        }
+        val id = interactor.insertPublication(publicationName, pdfBase64, login, description)
+        return interactor.obtainPublicationOrNull(id)?.run {
+            Response.Created(
+                PublicationResponseBody(
+                    id,
+                    name,
+                    author.login,
+                    pdf.pdfBase64,
+                    metadata.description
+                )
+            )
+        } ?: Response.InternalServerError(ErrorResponseBody.InternalServer)
+    }
 
     override fun deletePublication(id: Id) =
         onPublicationExists(id) { interactor.deletePublication(id) }
