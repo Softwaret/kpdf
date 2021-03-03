@@ -1,14 +1,16 @@
 package com.softwaret.kpdf.routing.routes
 
 import com.softwaret.kpdf.controller.publication.PublicationsController
+import com.softwaret.kpdf.model.inline.Description
 import com.softwaret.kpdf.model.inline.Id
 import com.softwaret.kpdf.model.inline.PdfBase64
+import com.softwaret.kpdf.model.inline.PublicationName
 import com.softwaret.kpdf.util.extension.respondWith
 import com.softwaret.kpdf.util.extension.userLoginFromPrincipal
-import io.ktor.application.call
-import io.ktor.auth.authenticate
+import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.locations.*
-import io.ktor.routing.Routing
+import io.ktor.routing.*
 
 @KtorExperimentalLocationsAPI
 fun Routing.publications(controller: PublicationsController) {
@@ -17,7 +19,7 @@ fun Routing.publications(controller: PublicationsController) {
     data class GetPublication(val publicationId: Int)
 
     @Location("/publications")
-    data class PostPublication(val name: String, val pdfBase64: String)
+    data class PostPublication(val name: String, val pdfBase64: String, val description: String)
 
     @Location("/publications")
     data class PutPublication(val publicationId: Int, val pdfBase64: String)
@@ -33,9 +35,10 @@ fun Routing.publications(controller: PublicationsController) {
         post<PostPublication> { postPublicationLocation ->
             call.respondWith(
                 controller.insertPublication(
-                    postPublicationLocation.name,
+                    PublicationName(postPublicationLocation.name),
                     PdfBase64(postPublicationLocation.pdfBase64),
-                    call.userLoginFromPrincipal
+                    call.userLoginFromPrincipal,
+                    Description(postPublicationLocation.description)
                 )
             )
         }

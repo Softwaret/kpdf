@@ -8,5 +8,9 @@ abstract class ErrorResponseBody(val errorMessage: String) : ResponseBody {
 
     object InputInvalid : ErrorResponseBody("InputInvalid")
 
+    object ResourceAlreadyExists : ErrorResponseBody("Resource already exists")
+
+    object InternalServer : ErrorResponseBody("Internal server error occurred")
+
     object Unknown : ErrorResponseBody("UnknownError")
 }

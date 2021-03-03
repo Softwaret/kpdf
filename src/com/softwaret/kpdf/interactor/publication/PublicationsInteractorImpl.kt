@@ -1,8 +1,6 @@
 package com.softwaret.kpdf.interactor.publication
 
-import com.softwaret.kpdf.model.inline.Id
-import com.softwaret.kpdf.model.inline.Login
-import com.softwaret.kpdf.model.inline.PdfBase64
+import com.softwaret.kpdf.model.inline.*
 import com.softwaret.kpdf.service.publication.PublicationsService
 
 class PublicationsInteractorImpl(
@@ -12,8 +10,22 @@ class PublicationsInteractorImpl(
     override fun obtainPublicationOrNull(id: Id) =
         publicationsService.obtainPublicationOrNull(id)
 
-    override fun insertPublication(publicationName: String, pdfBase64: PdfBase64, login: Login) =
-        publicationsService.insertPublication(publicationName, pdfBase64, login)
+    override fun obtainPublicationOrNull(
+        login: Login,
+        publicationName: PublicationName
+    ) = publicationsService.obtainPublicationOrNull(login, publicationName)
+
+    override fun insertPublication(
+        publicationName: PublicationName,
+        pdfBase64: PdfBase64,
+        login: Login,
+        description: Description
+    ) = publicationsService.insertPublication(
+        publicationName,
+        pdfBase64,
+        login,
+        description
+    )
 
     override fun deletePublication(id: Id) =
         publicationsService.deletePublication(id)
