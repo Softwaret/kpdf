@@ -7,7 +7,7 @@ interface PublicationsInteractor {
 
     fun obtainPublicationOrNull(id: Id): PublicationTile?
 
-    fun obtainPublicationOrNull(login: Login, publicationName: PublicationName) : PublicationTile?
+    fun obtainPublicationOrNull(login: Login, publicationName: PublicationName): PublicationTile?
 
     fun insertPublication(
         publicationName: PublicationName,

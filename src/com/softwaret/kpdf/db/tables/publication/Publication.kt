@@ -1,7 +1,6 @@
 package com.softwaret.kpdf.db.tables.publication
 
 import com.softwaret.kpdf.db.tables.metadata.Metadata
-import com.softwaret.kpdf.db.tables.metadata.Metadatas
 import com.softwaret.kpdf.db.tables.metadata.toMetadataTile
 import com.softwaret.kpdf.db.tables.pdf.Pdf
 import com.softwaret.kpdf.db.tables.pdf.toPdfTile
@@ -15,7 +14,7 @@ class Publication(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Publication>(Publications)
 
     var name by Publications.name
-    var metadata by Metadata referencedOn  Publications.metadata
+    var metadata by Metadata referencedOn Publications.metadata
     var author by User referencedOn Publications.author
     var pdf by Pdf referencedOn Publications.pdf
 }

@@ -16,4 +16,3 @@ fun Metadata.toMetadataTile() =
     MetadataTile(
         Description(description)
     )
-
