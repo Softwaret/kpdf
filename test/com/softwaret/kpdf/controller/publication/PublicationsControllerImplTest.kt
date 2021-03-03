@@ -1,17 +1,15 @@
 package com.softwaret.kpdf.controller.publication
 
+import com.softwaret.kpdf.db.tables.metadata.MetadataTile
 import com.softwaret.kpdf.db.tables.pdf.PdfTile
 import com.softwaret.kpdf.db.tables.publication.PublicationTile
 import com.softwaret.kpdf.db.tables.user.UserTile
 import com.softwaret.kpdf.extension.anyValue
 import com.softwaret.kpdf.interactor.publication.PublicationsInteractor
-import com.softwaret.kpdf.model.inline.Id
-import com.softwaret.kpdf.model.inline.Login
-import com.softwaret.kpdf.model.inline.Name
-import com.softwaret.kpdf.model.inline.Password
+import com.softwaret.kpdf.model.inline.*
 import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.success.PublicationResponseBody
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
@@ -34,7 +32,8 @@ internal class PublicationsControllerImplTest {
         get() = PublicationTile(
             name = "name",
             author = UserTile(Login("login"), Password("Password"), Name("Name")),
-            pdf = PdfTile("asd".byteInputStream())
+            pdf = PdfTile("asd".byteInputStream()),
+            metadata = MetadataTile(Description("description"))
         )
 
     @BeforeEach
@@ -67,31 +66,64 @@ internal class PublicationsControllerImplTest {
     }
 
     @Test
-    fun `insertPublication should return OK on correct data`() {
+    fun `insertPublication should return Created on correct data`() {
         val publication = testTile
+        every { interactor.obtainPublicationOrNull(anyValue(), anyValue()) } returns null
         every { interactor.obtainPublicationOrNull(anyValue()) } returns publication
 
-        val result = controller.insertPublication(publication.name, publication.pdf.pdfBase64, publication.author.login)
+        val result = controller.insertPublication(
+            PublicationName(publication.name),
+            publication.pdf.pdfBase64,
+            publication.author.login,
+            Description(publication.metadata.description.value)
+        )
 
-        assertResponseEqualsTile(result, publication)
+        assertResponseEqualsTile(result, publication, expectedCode = HttpStatusCode.Created)
     }
 
     @Test
-    fun `insertPublication should return BadRequest on insert fail`() {
+    fun `insertPublication should return InternalServerError code on sql insert failure`() {
         val publication = testTile
+        every { interactor.obtainPublicationOrNull(anyValue(), anyValue()) } returns null
         every { interactor.obtainPublicationOrNull(anyValue()) } returns null
 
-        val result = controller.insertPublication(publication.name, publication.pdf.pdfBase64, publication.author.login)
+        val result = controller.insertPublication(
+            PublicationName(publication.name),
+            publication.pdf.pdfBase64,
+            publication.author.login,
+            Description(publication.metadata.description.value)
+        )
 
-        assertEquals(HttpStatusCode.BadRequest, result.code)
+        assertEquals(HttpStatusCode.InternalServerError, result.code)
     }
 
-    private fun assertResponseEqualsTile(result: Response, publication: PublicationTile) {
-        assertTrue { result.code == HttpStatusCode.OK }
+    @Test
+    fun `insertPublication should return Conflict on insert fail`() {
+        val publication = testTile
+        every { interactor.obtainPublicationOrNull(anyValue(), anyValue()) } returns publication
+
+        val result = controller.insertPublication(
+            PublicationName(publication.name),
+            publication.pdf.pdfBase64,
+            publication.author.login,
+            Description(publication.metadata.description.value)
+        )
+
+        assertEquals(HttpStatusCode.Conflict, result.code)
+    }
+
+    private fun assertResponseEqualsTile(
+        result: Response,
+        publication: PublicationTile,
+        expectedCode: HttpStatusCode = HttpStatusCode.OK
+    ) {
+        val publicationResponseBody = result.body as PublicationResponseBody
+        assertEquals(result.code, expectedCode)
         assertTrue { result.body is PublicationResponseBody }
-        assertTrue { (result.body as PublicationResponseBody).authorLogin == publication.author.login }
-        assertTrue { (result.body as PublicationResponseBody).name == publication.name }
-        assertTrue { (result.body as PublicationResponseBody).pdf.value == publication.pdf.pdfBase64.value }
+        assertEquals(publicationResponseBody.authorLogin, publication.author.login)
+        assertEquals(publicationResponseBody.name, publication.name)
+        assertEquals(publicationResponseBody.pdf.value, publication.pdf.pdfBase64.value)
+        assertEquals(publicationResponseBody.description.value, publication.metadata.description.value)
     }
 
     @Test
