@@ -11,6 +11,7 @@ import com.softwaret.kpdf.model.inline.*
 import com.softwaret.kpdf.util.exception.PublicationException
 import com.softwaret.kpdf.util.extension.asId
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 import javax.sql.rowset.serial.SerialBlob
 
 class PublicationsServiceImpl : PublicationsService {
@@ -36,7 +37,7 @@ class PublicationsServiceImpl : PublicationsService {
             Publication.new {
                 name = publicationName.value
                 author = User.find { Users.login eq login.value }.first()
-                pdf = Pdf.new { blobPdf = SerialBlob(pdfBase64.value.toByteArray()) }
+                pdf = Pdf.new { blobPdf = SerialBlob(Base64.getDecoder().decode(pdfBase64.value)) }
                 metadata = Metadata.new { this.description = description.value }
             }
         }.id.value.asId()
