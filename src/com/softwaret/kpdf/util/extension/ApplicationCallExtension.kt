@@ -26,7 +26,7 @@ internal class Form(private val values: HashMap<String, String>) {
         (values[T::class.simpleName?.toLowerCase()] ?: "").let(create)
 }
 
-internal suspend fun ApplicationCall.receiveFrom(context: CoroutineContext, data: (Form) -> Response) =
+internal suspend fun ApplicationCall.receiveForm(context: CoroutineContext, data: (Form) -> Response) =
     withContext(context) {
         val values = hashMapOf<String, String>()
         receiveMultipart().forEachPart { part ->

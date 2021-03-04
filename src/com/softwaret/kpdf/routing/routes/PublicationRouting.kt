@@ -6,7 +6,7 @@ import com.softwaret.kpdf.model.inline.Id
 import com.softwaret.kpdf.model.inline.PdfBase64
 import com.softwaret.kpdf.model.inline.PublicationName
 import com.softwaret.kpdf.util.extension.respondWith
-import com.softwaret.kpdf.util.extension.receiveFrom
+import com.softwaret.kpdf.util.extension.receiveForm
 import com.softwaret.kpdf.util.extension.userLoginFromPrincipal
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -36,7 +36,7 @@ fun Routing.publications(controller: PublicationsController) {
 
         post<PostPublication> {
             call.respondWith(
-                call.receiveFrom(Dispatchers.IO) { form ->
+                call.receiveForm(Dispatchers.IO) { form ->
                     controller.insertPublication(
                         form.get { PublicationName(it) },
                         form.get { PdfBase64(it) },
