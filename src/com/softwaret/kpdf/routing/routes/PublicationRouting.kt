@@ -6,11 +6,13 @@ import com.softwaret.kpdf.model.inline.Id
 import com.softwaret.kpdf.model.inline.PdfBase64
 import com.softwaret.kpdf.model.inline.PublicationName
 import com.softwaret.kpdf.util.extension.respondWith
+import com.softwaret.kpdf.util.extension.toForm
 import com.softwaret.kpdf.util.extension.userLoginFromPrincipal
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.locations.*
 import io.ktor.routing.*
+import kotlinx.coroutines.Dispatchers
 
 @KtorExperimentalLocationsAPI
 fun Routing.publications(controller: PublicationsController) {
@@ -19,7 +21,7 @@ fun Routing.publications(controller: PublicationsController) {
     data class GetPublication(val publicationId: Int)
 
     @Location("/publications")
-    data class PostPublication(val name: String, val pdfBase64: String, val description: String)
+    class PostPublication
 
     @Location("/publications")
     data class PutPublication(val publicationId: Int, val pdfBase64: String)
@@ -32,14 +34,16 @@ fun Routing.publications(controller: PublicationsController) {
             call.respondWith(controller.obtainPublication(Id(getPublicationModel.publicationId)))
         }
 
-        post<PostPublication> { postPublicationLocation ->
+        post<PostPublication> {
             call.respondWith(
-                controller.insertPublication(
-                    PublicationName(postPublicationLocation.name),
-                    PdfBase64(postPublicationLocation.pdfBase64),
-                    call.userLoginFromPrincipal,
-                    Description(postPublicationLocation.description)
-                )
+                call.toForm(Dispatchers.IO) { form ->
+                    controller.insertPublication(
+                        form.get { PublicationName(it) },
+                        form.get { PdfBase64(it) },
+                        call.userLoginFromPrincipal,
+                        form.get { Description(it) }
+                    )
+                }
             )
         }
 
