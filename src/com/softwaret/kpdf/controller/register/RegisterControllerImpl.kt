@@ -6,7 +6,7 @@ import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Name
 import com.softwaret.kpdf.model.inline.Password
 import com.softwaret.kpdf.response.BadRequest
-import com.softwaret.kpdf.response.OK
+import com.softwaret.kpdf.response.Created
 import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.success.RegisterResponseBody
@@ -27,7 +27,7 @@ class RegisterControllerImpl(
 
             else -> {
                 registerUser(login, password, name)
-                Response.OK(RegisterResponseBody())
+                Response.Created(RegisterResponseBody())
             }
         }
 
