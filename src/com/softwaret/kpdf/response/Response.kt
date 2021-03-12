@@ -11,26 +11,26 @@ data class Response(
     companion object
 }
 
-fun Response.Companion.UnprocessableEntity(body: ResponseBody) =
+fun Response.Companion.unprocessableEntity(body: ResponseBody) =
     Response(HttpStatusCode.UnprocessableEntity, body)
 
-fun Response.Companion.Unauthorized(body: ResponseBody) =
+fun Response.Companion.u(body: ResponseBody) =
     Response(HttpStatusCode.Unauthorized, body)
 
-fun Response.Companion.OK(body: ResponseBody) =
+fun Response.Companion.ok(body: ResponseBody) =
     Response(HttpStatusCode.OK, body)
 
-fun Response.Companion.Created(body: ResponseBody) =
+fun Response.Companion.created(body: ResponseBody) =
     Response(HttpStatusCode.Created, body)
 
-fun Response.Companion.BadRequest(body: ResponseBody) =
+fun Response.Companion.badRequest(body: ResponseBody) =
     Response(HttpStatusCode.BadRequest, body)
 
-fun Response.Companion.NotFound(body: ResponseBody) =
+fun Response.Companion.notFound(body: ResponseBody) =
     Response(HttpStatusCode.NotFound, body)
 
-fun Response.Companion.InternalServerError(body: ResponseBody) =
+fun Response.Companion.internalServerError(body: ResponseBody) =
     Response(HttpStatusCode.InternalServerError, body)
 
-fun Response.Companion.Conflict(body: ResponseBody) =
+fun Response.Companion.conflict(body: ResponseBody) =
     Response(HttpStatusCode.Conflict, body)
