@@ -14,7 +14,7 @@ data class Response(
 fun Response.Companion.unprocessableEntity(body: ResponseBody) =
     Response(HttpStatusCode.UnprocessableEntity, body)
 
-fun Response.Companion.u(body: ResponseBody) =
+fun Response.Companion.unauthorized(body: ResponseBody) =
     Response(HttpStatusCode.Unauthorized, body)
 
 fun Response.Companion.ok(body: ResponseBody) =
