@@ -26,10 +26,10 @@ fun Routing.publications(controller: PublicationsController, respondFileDir: Fil
     class PostPublication
 
     @Location("/publication/{publicationId}")
-    data class PutPublication(val publicationId: Int, val pdfBase64: String)
-
-    @Location("/publication/{publicationId}")
     data class DeletePublication(val publicationId: Int)
+
+    @Location("/publication/file/{publicationId}")
+    data class PutPublicationFile(val publicationId: Int)
 
     @Location("/publication/file/{publicationId}")
     data class GetPublicationFile(val publicationId: Int)
@@ -52,7 +52,13 @@ fun Routing.publications(controller: PublicationsController, respondFileDir: Fil
             )
         }
 
-        put<PutPublication> { putPublicationLocation ->
+        delete<DeletePublication> { deletePublicationLocation ->
+            call.respondWith(
+                controller.deletePublication(Id(deletePublicationLocation.publicationId))
+            )
+        }
+
+        put<PutPublicationFile> { putPublicationLocation ->
             call.respondWith(
                 call.receiveForm(Dispatchers.IO) { form ->
                     controller.updatePublication(
@@ -60,12 +66,6 @@ fun Routing.publications(controller: PublicationsController, respondFileDir: Fil
                         form.getFileItem { PdfFile(it) }
                     )
                 }
-            )
-        }
-
-        delete<DeletePublication> { deletePublicationLocation ->
-            call.respondWith(
-                controller.deletePublication(Id(deletePublicationLocation.publicationId))
             )
         }
 
