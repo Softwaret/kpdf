@@ -11,12 +11,12 @@ interface PublicationsService {
 
     fun insertPublication(
         publicationName: PublicationName,
-        pdfBase64: PdfBase64,
+        pdfFile: PdfFile,
         login: Login,
         description: Description
     ): Id
 
     fun deletePublication(id: Id)
 
-    fun updatePublication(id: Id, pdfBase64: PdfBase64)
+    fun updatePublication(id: Id, pdfFile: PdfFile)
 }
