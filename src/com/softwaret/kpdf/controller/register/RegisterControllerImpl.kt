@@ -5,6 +5,8 @@ import com.softwaret.kpdf.interactor.register.RegisterInteractor
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Name
 import com.softwaret.kpdf.model.inline.Password
+import com.softwaret.kpdf.response.BadRequest
+import com.softwaret.kpdf.response.Created
 import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.badRequest
 import com.softwaret.kpdf.response.error.ErrorResponseBody
@@ -27,7 +29,7 @@ class RegisterControllerImpl(
 
             else -> {
                 registerUser(login, password, name)
-                Response.ok(RegisterResponseBody())
+                Response.created(RegisterResponseBody())
             }
         }
 
