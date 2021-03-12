@@ -1,12 +1,15 @@
 package com.softwaret.kpdf.db.tables.pdf
 
-import com.softwaret.kpdf.model.inline.PdfBase64
+import com.softwaret.kpdf.model.inline.PdfFile
+import com.softwaret.kpdf.util.extension.trySafeReadingOrEmpty
 import java.io.InputStream
 
 data class PdfTile(
-    val inputStream: InputStream
+    private val inputStream: InputStream
 ) {
 
-    val pdfBase64: PdfBase64
-        get() = PdfBase64(inputStream.readBytes().toString())
+    private val bytes by lazy { inputStream.trySafeReadingOrEmpty() }
+
+    val pdfFile: PdfFile
+        get() = PdfFile(bytes)
 }
