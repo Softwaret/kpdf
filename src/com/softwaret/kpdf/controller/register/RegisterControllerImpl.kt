@@ -5,10 +5,10 @@ import com.softwaret.kpdf.interactor.register.RegisterInteractor
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Name
 import com.softwaret.kpdf.model.inline.Password
-import com.softwaret.kpdf.response.BadRequest
-import com.softwaret.kpdf.response.OK
 import com.softwaret.kpdf.response.Response
+import com.softwaret.kpdf.response.badRequest
 import com.softwaret.kpdf.response.error.ErrorResponseBody
+import com.softwaret.kpdf.response.ok
 import com.softwaret.kpdf.response.success.RegisterResponseBody
 import com.softwaret.kpdf.validation.InputValidator
 
@@ -20,14 +20,14 @@ class RegisterControllerImpl(
     override fun register(login: Login, password: Password, name: Name) =
         when {
             isInputValid(login, password, name).not() ->
-                Response.BadRequest(ErrorResponseBody.InputInvalid)
+                Response.badRequest(ErrorResponseBody.InputInvalid)
 
             doesUserExist(login) ->
-                Response.BadRequest(RegisterErrorResponseBody.LoginAlreadyTaken)
+                Response.badRequest(RegisterErrorResponseBody.LoginAlreadyTaken)
 
             else -> {
                 registerUser(login, password, name)
-                Response.OK(RegisterResponseBody())
+                Response.ok(RegisterResponseBody())
             }
         }
 
