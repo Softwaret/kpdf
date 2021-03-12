@@ -65,13 +65,13 @@ internal class Form(
 ) {
 
     inline fun <reified T> getTextItem(create: (String) -> T) =
-        (formItems[T::class.simpleName?.toLowerCase()] ?: "").let(create)
+        (formItems[T::class.simpleName?.toKey()] ?: "").let(create)
 
     inline fun <reified T> getFileItem(create: (ByteArray) -> T) =
-        (fileItems[T::class.simpleName?.toLowerCase()] ?: ByteArray(0)).let(create)
+        (fileItems[T::class.simpleName?.toKey()] ?: ByteArray(0)).let(create)
 
     inline fun <reified T> getBinaryItem(create: (ByteArray) -> T) =
-        (binaryItems[T::class.simpleName?.toLowerCase()] ?: ByteArray(0)).let(create)
+        (binaryItems[T::class.simpleName?.toKey()] ?: ByteArray(0)).let(create)
 }
 
 internal suspend fun ApplicationCall.receiveForm(context: CoroutineContext, data: (Form) -> Response) =
@@ -82,15 +82,15 @@ internal suspend fun ApplicationCall.receiveForm(context: CoroutineContext, data
         receiveMultipart().forEachPart { part ->
             when (part) {
                 is PartData.FileItem -> {
-                    part.name?.let { name ->
+                    part.name?.toKey()?.let { name ->
                         fileItems[name] = part.streamProvider().trySafeReadingOrEmpty()
                     }
                 }
                 is PartData.FormItem -> {
-                    part.name?.let { name -> formItems[name] = part.value }
+                    part.name?.toKey()?.let { name -> formItems[name] = part.value }
                 }
                 is PartData.BinaryItem -> {
-                    part.name?.let { name ->
+                    part.name?.toKey()?.let { name ->
                         part.provider().apply {
                             binaryItems[name] = readBytes()
                         }.close()
@@ -101,3 +101,5 @@ internal suspend fun ApplicationCall.receiveForm(context: CoroutineContext, data
         }
         data(Form(formItems, fileItems, binaryItems))
     }
+
+private fun String.toKey() = toLowerCase()
