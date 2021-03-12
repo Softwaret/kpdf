@@ -20,7 +20,6 @@ fun InputStream.trySafeReadingOrEmpty(): ByteArray =
         ByteArray(0)
     }
 
-
 private const val DEFAULT_BUFFER_SIZE = 8192
 
 private const val MAX_BUFFER_SIZE = Int.MAX_VALUE - 8
