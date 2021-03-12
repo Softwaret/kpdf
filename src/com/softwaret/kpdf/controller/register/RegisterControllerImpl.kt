@@ -5,12 +5,10 @@ import com.softwaret.kpdf.interactor.register.RegisterInteractor
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Name
 import com.softwaret.kpdf.model.inline.Password
-import com.softwaret.kpdf.response.BadRequest
-import com.softwaret.kpdf.response.Created
 import com.softwaret.kpdf.response.Response
 import com.softwaret.kpdf.response.badRequest
+import com.softwaret.kpdf.response.created
 import com.softwaret.kpdf.response.error.ErrorResponseBody
-import com.softwaret.kpdf.response.ok
 import com.softwaret.kpdf.response.success.RegisterResponseBody
 import com.softwaret.kpdf.validation.InputValidator
 
