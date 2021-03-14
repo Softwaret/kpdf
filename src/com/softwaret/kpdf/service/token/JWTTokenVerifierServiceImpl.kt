@@ -4,10 +4,13 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.JWTVerifier
 
-open class JWTTokenVeryfingServiceImpl : JWTTokenVeryfingService {
+open class JWTTokenVerifierServiceImpl(algorithm: Algorithm, issuer: String) : JWTTokenVerifierService {
 
-    override fun buildVerifier(algorithm: Algorithm, issuer: String): JWTVerifier =
+    private val verifier = lazy {
         JWT.require(algorithm)
             .withIssuer(issuer)
             .build()
+    }
+
+    override fun obtainVerifier(): JWTVerifier = verifier.value
 }

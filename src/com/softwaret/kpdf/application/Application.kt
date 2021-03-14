@@ -7,30 +7,24 @@ import com.softwaret.kpdf.controller.bindControllers
 import com.softwaret.kpdf.db.H2Db
 import com.softwaret.kpdf.interactor.bindInteractors
 import com.softwaret.kpdf.repository.bindRepositories
-import com.softwaret.kpdf.routing.routes.login
+import com.softwaret.kpdf.routing.routes.auth
 import com.softwaret.kpdf.routing.routes.publications
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
-import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
+import com.softwaret.kpdf.service.token.JWTTokenVerifierService
 import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import com.softwaret.kpdf.util.parameters.bindParameters
 import com.softwaret.kpdf.validation.bindValidators
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.jwt.JWTCredential
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.jwt.jwt
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.PartialContent
-import io.ktor.jackson.jackson
-import io.ktor.locations.Locations
-import io.ktor.routing.routing
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.features.*
+import io.ktor.jackson.*
+import io.ktor.locations.*
+import io.ktor.routing.*
 import org.kodein.di.ktor.di
 import java.io.File
 
@@ -42,7 +36,7 @@ private val Application.userService
     get() = instance<UserService>()
 
 private val Application.jwtTokenVerifierService
-    get() = instance<JWTTokenVeryfingService>()
+    get() = instance<JWTTokenVerifierService>()
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addConfFileLocation(args))
 
@@ -75,7 +69,7 @@ private fun Application.installFeatures() {
     install(Authentication) {
         jwt {
             realm = environment.config.realm
-            verifier(buildJwtVerifier())
+            verifier(jwtTokenVerifierService.obtainVerifier())
             validate { validateCredential(it) }
         }
     }
@@ -94,9 +88,7 @@ private fun setupDb() {
 
 private fun Application.bindDI() {
     di {
-        bindParameters(
-            salt = environment.config.stringProperty("config.SALT")
-        )
+        bindParameters(salt = environment.config.stringProperty("config.SALT"))
         bindValidators()
         bindControllers()
         bindInteractors()
@@ -107,7 +99,7 @@ private fun Application.bindDI() {
 
 private fun Application.bindRouting() {
     routing {
-        login(instance())
+        auth(instance())
         register(instance())
         publications(instance())
     }
@@ -121,8 +113,4 @@ private fun Application.obtainParameters() = environment.config.run {
             issuer
         )
     )
-}
-
-private fun Application.buildJwtVerifier() = environment.config.run {
-    jwtTokenVerifierService.buildVerifier(algorithm, issuer)
 }
