@@ -24,6 +24,7 @@ private const val DEFAULT_BUFFER_SIZE = 8192
 
 private const val MAX_BUFFER_SIZE = Int.MAX_VALUE - 8
 
+@Suppress("ReturnCount", "NestedBlockDepth", "NoMultipleSpaces")
 fun InputStream.readEveryByte(): ByteArray {
     val len = Integer.MAX_VALUE
     require(len >= 0) { "len < 0" }
@@ -37,11 +38,7 @@ fun InputStream.readEveryByte(): ByteArray {
         var nread = 0
 
         // read to EOF which may read more or less than buffer size
-        while (read(
-                buf, nread,
-                Math.min(buf.size - nread, remaining)
-            ).also { n = it } > 0
-        ) {
+        while (read(buf, nread, Math.min(buf.size - nread, remaining)).also { n = it } > 0) {
             nread += n
             remaining -= n
         }
