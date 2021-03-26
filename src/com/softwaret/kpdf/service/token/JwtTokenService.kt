@@ -11,8 +11,9 @@ import java.util.*
 class JwtTokenService(
     private val algorithm: Algorithm,
     private val expirationPeriod: Milliseconds,
-    private val issuer: String
-) : JWTTokenVerifierServiceImpl(algorithm, issuer), TokenService {
+    private val issuer: String,
+    private val verifierService: JWTTokenVerifierService
+) : TokenService {
 
     companion object {
 
@@ -39,7 +40,7 @@ class JwtTokenService(
 
     override fun isRefreshTokenValid(refreshToken: String): Boolean =
         try {
-            obtainVerifier().verify(refreshToken)
+            verifierService.obtainVerifier().verify(refreshToken)
             true
         } catch (e: JWTVerificationException) {
             false

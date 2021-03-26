@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.JWTVerifier
 
-open class JWTTokenVerifierServiceImpl(algorithm: Algorithm, issuer: String) : JWTTokenVerifierService {
+class JWTTokenVerifierServiceImpl(algorithm: Algorithm, issuer: String) : JWTTokenVerifierService {
 
     private val verifier = lazy {
         JWT.require(algorithm)

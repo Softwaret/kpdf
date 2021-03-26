@@ -23,7 +23,8 @@ fun DI.MainBuilder.bindServices(serviceParameters: ServiceParameters) {
         JwtTokenService(
             serviceParameters.jwtParameters.algorithm,
             serviceParameters.jwtParameters.validityPeriod,
-            serviceParameters.jwtParameters.issuer
+            serviceParameters.jwtParameters.issuer,
+            instance()
         )
     }
 
