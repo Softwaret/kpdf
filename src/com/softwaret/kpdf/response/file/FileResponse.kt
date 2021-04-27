@@ -4,8 +4,8 @@ import io.ktor.http.*
 
 data class FileResponse(
     val code: HttpStatusCode,
-    val fileName: String,
-    val file: ByteArray
+    val fileName: String = "",
+    val file: ByteArray = ByteArray(0)
 ) {
 
     override fun equals(other: Any?): Boolean {
@@ -35,4 +35,7 @@ fun FileResponse.Companion.ok(fileName: String, file: ByteArray) =
     FileResponse(HttpStatusCode.OK, fileName, file)
 
 fun FileResponse.Companion.emptyNotFound() =
-    FileResponse(HttpStatusCode.NotFound, "", ByteArray(0))
+    FileResponse(HttpStatusCode.NotFound)
+
+fun FileResponse.Companion.error() =
+    FileResponse(HttpStatusCode.InternalServerError)
