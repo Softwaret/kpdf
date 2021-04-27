@@ -6,11 +6,13 @@ import com.softwaret.kpdf.response.*
 import com.softwaret.kpdf.response.error.ErrorResponseBody
 import com.softwaret.kpdf.response.file.FileResponse
 import com.softwaret.kpdf.response.file.emptyNotFound
+import com.softwaret.kpdf.response.file.error
 import com.softwaret.kpdf.response.file.ok
 import com.softwaret.kpdf.response.success.EmptyResponseBody
 import com.softwaret.kpdf.response.success.PublicationCreatedResponseBody
 import com.softwaret.kpdf.response.success.PublicationResponseBody
 import com.softwaret.kpdf.util.exception.PublicationException
+import java.io.IOException
 
 class PublicationsControllerImpl(
     private val interactor: PublicationsInteractor
@@ -82,7 +84,11 @@ class PublicationsControllerImpl(
         return if (pub == null) {
             FileResponse.emptyNotFound()
         } else {
-            FileResponse.ok(pub.name.pdfExtension(), pub.pdf.pdfFile.bytes)
+            try {
+                FileResponse.ok(pub.name.pdfExtension(), pub.pdf.pdfFile.bytes)
+            } catch (exception: IOException) {
+                FileResponse.error()
+            }
         }
     }
 
