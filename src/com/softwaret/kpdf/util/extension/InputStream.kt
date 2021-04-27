@@ -1,24 +1,15 @@
 package com.softwaret.kpdf.util.extension
 
-import com.softwaret.kpdf.util.log.Log
-import java.io.IOException
 import java.io.InputStream
 import java.util.*
 
 fun InputStream.readString() = bufferedReader().use { it.readText() }
 
-fun InputStream.trySafeReadingOrEmpty(): ByteArray =
-    try {
-        val allBytes = readEveryByte()
-        close()
-        allBytes
-    } catch (exception: IOException) {
-        Log.d {
-            "Reading stream error"
-        }
-        Log.e(exception)
-        ByteArray(0)
-    }
+fun InputStream.trySafeReadingOrEmpty(): ByteArray {
+    val allBytes = readEveryByte()
+    close()
+    return allBytes
+}
 
 private const val DEFAULT_BUFFER_SIZE = 8192
 
