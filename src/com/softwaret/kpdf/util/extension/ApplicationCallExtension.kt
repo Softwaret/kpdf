@@ -16,7 +16,6 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 val ApplicationCall.userLoginFromPrincipal
@@ -83,7 +82,11 @@ internal suspend fun ApplicationCall.receiveForm(context: CoroutineContext, data
             when (part) {
                 is PartData.FileItem -> {
                     part.name?.toKey()?.let { name ->
-                        fileItems[name] = part.streamProvider().trySafeReadingOrEmpty()
+                        try {
+                            fileItems[name] = part.streamProvider().trySafeReadingOrEmpty()
+                        } catch (exception: IOException) {
+                            respond(HttpStatusCode.InternalServerError)
+                        }
                     }
                 }
                 is PartData.FormItem -> {
