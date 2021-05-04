@@ -4,12 +4,12 @@ import com.softwaret.kpdf.controller.base.BaseController
 import com.softwaret.kpdf.interactor.login.LoginInteractor
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Password
-import com.softwaret.kpdf.response.BadRequest
-import com.softwaret.kpdf.response.OK
 import com.softwaret.kpdf.response.Response
-import com.softwaret.kpdf.response.Unauthorized
+import com.softwaret.kpdf.response.badRequest
 import com.softwaret.kpdf.response.error.ErrorResponseBody
+import com.softwaret.kpdf.response.ok
 import com.softwaret.kpdf.response.success.LoginResponseBody
+import com.softwaret.kpdf.response.unauthorized
 import com.softwaret.kpdf.validation.InputValidator
 
 class LoginControllerImpl(
@@ -20,14 +20,14 @@ class LoginControllerImpl(
     override suspend fun login(login: Login, password: Password) =
         when {
             isInputValid(login, password).not() ->
-                Response.BadRequest(ErrorResponseBody.InputInvalid)
+                Response.badRequest(ErrorResponseBody.InputInvalid)
 
             userExistsAndPasswordIsValid(login, password).not() ->
-                Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
+                Response.unauthorized(ErrorResponseBody.AuthorizationFailed)
 
             else -> {
                 val token = loginUser(login, password)
-                Response.OK(LoginResponseBody(token))
+                Response.ok(LoginResponseBody(token))
             }
         }
 

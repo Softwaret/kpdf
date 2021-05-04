@@ -2,6 +2,7 @@ package com.softwaret.kpdf.controller.publication
 
 import com.softwaret.kpdf.model.inline.*
 import com.softwaret.kpdf.response.Response
+import com.softwaret.kpdf.response.file.FileResponse
 
 interface PublicationsController {
 
@@ -9,12 +10,14 @@ interface PublicationsController {
 
     fun insertPublication(
         publicationName: PublicationName,
-        pdfBase64: PdfBase64,
+        pdfFile: PdfFile,
         login: Login,
         description: Description
     ): Response
 
-    fun updatePublication(id: Id, pdfBase64: PdfBase64): Response
+    fun updatePublication(id: Id, pdfFile: PdfFile): Response
 
     fun deletePublication(id: Id): Response
+
+    fun getPublicationFile(id: Id): FileResponse
 }

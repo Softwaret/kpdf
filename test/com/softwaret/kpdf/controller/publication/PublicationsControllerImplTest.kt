@@ -8,7 +8,9 @@ import com.softwaret.kpdf.extension.anyValue
 import com.softwaret.kpdf.interactor.publication.PublicationsInteractor
 import com.softwaret.kpdf.model.inline.*
 import com.softwaret.kpdf.response.Response
+import com.softwaret.kpdf.response.success.PublicationCreatedResponseBody
 import com.softwaret.kpdf.response.success.PublicationResponseBody
+import com.softwaret.kpdf.util.exception.PublicationException
 import io.ktor.http.*
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
@@ -42,14 +44,14 @@ internal class PublicationsControllerImplTest {
     }
 
     @Test
-    fun `obtainPublication should return BadRequest on missing publication`() {
+    fun `obtainPublication should return NotFound on missing publication`() {
         val id = Id(1)
         every { interactor.obtainPublicationOrNull(id) } returns null
 
         val result = controller.obtainPublication(id)
 
         verify(exactly = 1) { interactor.obtainPublicationOrNull(id) }
-        assertTrue { result.code == HttpStatusCode.BadRequest }
+        assertTrue { result.code == HttpStatusCode.NotFound }
     }
 
     @Test
@@ -73,23 +75,26 @@ internal class PublicationsControllerImplTest {
 
         val result = controller.insertPublication(
             PublicationName(publication.name),
-            publication.pdf.pdfBase64,
+            publication.pdf.pdfFile,
             publication.author.login,
             Description(publication.metadata.description.value)
         )
 
-        assertResponseEqualsTile(result, publication, expectedCode = HttpStatusCode.Created)
+        assertEquals(result.code, HttpStatusCode.Created)
+        assertTrue { result.body is PublicationCreatedResponseBody }
     }
 
     @Test
     fun `insertPublication should return InternalServerError code on sql insert failure`() {
         val publication = testTile
         every { interactor.obtainPublicationOrNull(anyValue(), anyValue()) } returns null
-        every { interactor.obtainPublicationOrNull(anyValue()) } returns null
+        every {
+            interactor.insertPublication(anyValue(), anyValue(), anyValue(), anyValue())
+        } throws PublicationException.PublicationNotCreated
 
         val result = controller.insertPublication(
             PublicationName(publication.name),
-            publication.pdf.pdfBase64,
+            publication.pdf.pdfFile,
             publication.author.login,
             Description(publication.metadata.description.value)
         )
@@ -104,7 +109,7 @@ internal class PublicationsControllerImplTest {
 
         val result = controller.insertPublication(
             PublicationName(publication.name),
-            publication.pdf.pdfBase64,
+            publication.pdf.pdfFile,
             publication.author.login,
             Description(publication.metadata.description.value)
         )
@@ -122,22 +127,21 @@ internal class PublicationsControllerImplTest {
         assertTrue { result.body is PublicationResponseBody }
         assertEquals(publicationResponseBody.authorLogin, publication.author.login)
         assertEquals(publicationResponseBody.name, publication.name)
-        assertEquals(publicationResponseBody.pdf.value, publication.pdf.pdfBase64.value)
         assertEquals(publicationResponseBody.description.value, publication.metadata.description.value)
     }
 
     @Test
-    fun `deletePublication should return BadRequest on missing publication`() {
+    fun `deletePublication should return NotFound on missing publication`() {
         every { interactor.obtainPublicationOrNull(anyValue()) } returns null
         val result = controller.deletePublication(Id(1))
-        assertEquals(HttpStatusCode.BadRequest, result.code)
+        assertEquals(HttpStatusCode.NotFound, result.code)
     }
 
     @Test
-    fun `updatePublication should return BadRequest on missing publication`() {
+    fun `updatePublication should return NotFound on missing publication`() {
         every { interactor.obtainPublicationOrNull(anyValue()) } returns null
-        val result = controller.updatePublication(Id(1), testTile.pdf.pdfBase64)
-        assertEquals(HttpStatusCode.BadRequest, result.code)
+        val result = controller.updatePublication(Id(1), testTile.pdf.pdfFile)
+        assertEquals(HttpStatusCode.NotFound, result.code)
     }
 
     @Test
@@ -156,9 +160,9 @@ internal class PublicationsControllerImplTest {
         val id = Id(1)
         every { interactor.obtainPublicationOrNull(anyValue()) } returns testTile
 
-        val result = controller.updatePublication(id, testTile.pdf.pdfBase64)
+        val result = controller.updatePublication(id, testTile.pdf.pdfFile)
 
-        verify(exactly = 1) { interactor.updatePublication(id, testTile.pdf.pdfBase64) }
+        verify(exactly = 1) { interactor.updatePublication(id, testTile.pdf.pdfFile) }
         assertEquals(HttpStatusCode.OK, result.code)
     }
 }

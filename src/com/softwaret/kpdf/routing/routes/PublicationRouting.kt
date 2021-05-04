@@ -3,52 +3,52 @@ package com.softwaret.kpdf.routing.routes
 import com.softwaret.kpdf.controller.publication.PublicationsController
 import com.softwaret.kpdf.model.inline.Description
 import com.softwaret.kpdf.model.inline.Id
-import com.softwaret.kpdf.model.inline.PdfBase64
+import com.softwaret.kpdf.model.inline.PdfFile
 import com.softwaret.kpdf.model.inline.PublicationName
+import com.softwaret.kpdf.util.extension.receiveForm
 import com.softwaret.kpdf.util.extension.respondWith
+import com.softwaret.kpdf.util.extension.respondWithFile
 import com.softwaret.kpdf.util.extension.userLoginFromPrincipal
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.locations.*
 import io.ktor.routing.*
+import kotlinx.coroutines.Dispatchers
+import java.io.File
 
 @KtorExperimentalLocationsAPI
-fun Routing.publications(controller: PublicationsController) {
+fun Routing.publications(controller: PublicationsController, respondFileDir: File) {
 
-    @Location("/publications")
+    @Location("/publication/{publicationId}")
     data class GetPublication(val publicationId: Int)
 
-    @Location("/publications")
-    data class PostPublication(val name: String, val pdfBase64: String, val description: String)
+    @Location("/publication")
+    class PostPublication
 
-    @Location("/publications")
-    data class PutPublication(val publicationId: Int, val pdfBase64: String)
-
-    @Location("/publications")
+    @Location("/publication/{publicationId}")
     data class DeletePublication(val publicationId: Int)
+
+    @Location("/publication/file/{publicationId}")
+    data class PutPublicationFile(val publicationId: Int)
+
+    @Location("/publication/file/{publicationId}")
+    data class GetPublicationFile(val publicationId: Int)
 
     authenticate {
         get<GetPublication> { getPublicationModel ->
             call.respondWith(controller.obtainPublication(Id(getPublicationModel.publicationId)))
         }
 
-        post<PostPublication> { postPublicationLocation ->
+        post<PostPublication> {
             call.respondWith(
-                controller.insertPublication(
-                    PublicationName(postPublicationLocation.name),
-                    PdfBase64(postPublicationLocation.pdfBase64),
-                    call.userLoginFromPrincipal,
-                    Description(postPublicationLocation.description)
-                )
-            )
-        }
-
-        put<PutPublication> { putPublicationLocation ->
-            call.respondWith(
-                controller.updatePublication(
-                    Id(putPublicationLocation.publicationId),
-                    PdfBase64(putPublicationLocation.pdfBase64)
-                )
+                call.receiveForm(Dispatchers.IO) { form ->
+                    controller.insertPublication(
+                        form.getTextItem { PublicationName(it) },
+                        form.getFileItem { PdfFile(it) },
+                        call.userLoginFromPrincipal,
+                        form.getTextItem { Description(it) }
+                    )
+                }
             )
         }
 
@@ -56,6 +56,24 @@ fun Routing.publications(controller: PublicationsController) {
             call.respondWith(
                 controller.deletePublication(Id(deletePublicationLocation.publicationId))
             )
+        }
+
+        put<PutPublicationFile> { putPublicationLocation ->
+            call.respondWith(
+                call.receiveForm(Dispatchers.IO) { form ->
+                    controller.updatePublication(
+                        Id(putPublicationLocation.publicationId),
+                        form.getFileItem { PdfFile(it) }
+                    )
+                }
+            )
+        }
+
+        get<GetPublicationFile> { getPublicationFileModel ->
+            controller.getPublicationFile(Id(getPublicationFileModel.publicationId))
+                .let { response ->
+                    call.respondWithFile(response, respondFileDir)
+                }
         }
     }
 }

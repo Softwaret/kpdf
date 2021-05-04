@@ -13,28 +13,23 @@ import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
 import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
 import com.softwaret.kpdf.service.user.UserService
+import com.softwaret.kpdf.util.RESPOND_FILE_DIR
+import com.softwaret.kpdf.util.bindUtils
 import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
 import com.softwaret.kpdf.util.parameters.bindParameters
 import com.softwaret.kpdf.validation.bindValidators
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.jwt.JWTCredential
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.jwt.jwt
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.PartialContent
-import io.ktor.jackson.jackson
-import io.ktor.locations.Locations
-import io.ktor.routing.routing
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.features.*
+import io.ktor.jackson.*
+import io.ktor.locations.*
+import io.ktor.routing.*
 import org.kodein.di.ktor.di
 import java.io.File
 
-private const val EXAMPLE_APP_CONF_PATH = "resources/application-example.conf"
 private const val APP_CONF_PATH = "resources/application.conf"
 private const val CONFIG_ARG_NAME = "-config="
 
@@ -49,7 +44,6 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addCo
 private fun addConfFileLocation(args: Array<String>) = when {
     args.any { it.contains(CONFIG_ARG_NAME) } -> args
     File(APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$APP_CONF_PATH"
-    File(EXAMPLE_APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$EXAMPLE_APP_CONF_PATH"
     else -> args
 }
 
@@ -97,6 +91,7 @@ private fun Application.bindDI() {
         bindParameters(
             salt = environment.config.stringProperty("config.SALT")
         )
+        bindUtils(environment.getRespondFileDir())
         bindValidators()
         bindControllers()
         bindInteractors()
@@ -109,7 +104,7 @@ private fun Application.bindRouting() {
     routing {
         login(instance())
         register(instance())
-        publications(instance())
+        publications(instance(), instance(tag = RESPOND_FILE_DIR))
     }
 }
 
