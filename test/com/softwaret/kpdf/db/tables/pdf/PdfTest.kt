@@ -3,9 +3,10 @@ package com.softwaret.kpdf.db.tables.pdf
 import com.softwaret.kpdf.base.test.BaseTableTest
 import com.softwaret.kpdf.util.extension.readString
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
-import javax.sql.rowset.serial.SerialBlob
+import java.io.ByteArrayInputStream
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -21,7 +22,7 @@ class PdfTest : BaseTableTest() {
 
         transaction {
             val newPdf = Pdf.new {
-                blobPdf = SerialBlob(testPdf.toByteArray())
+                blobPdf = ExposedBlob(testPdf.toByteArray())
             }
 
             assertNotNull(Pdf.findById(newPdf.id))
@@ -34,10 +35,13 @@ class PdfTest : BaseTableTest() {
 
         transaction {
             val newPdf = Pdf.new {
-                blobPdf = SerialBlob(testPdf.toByteArray())
+                blobPdf = ExposedBlob(testPdf.toByteArray())
             }
 
-            assertEquals(testPdf, Pdf.findById(newPdf.id)?.blobPdf?.binaryStream?.readString())
+            assertEquals(
+                testPdf,
+                Pdf.findById(newPdf.id)?.blobPdf?.bytes?.let { ByteArrayInputStream(it) }?.readString()
+            )
         }
     }
 }
