@@ -20,6 +20,6 @@ class SaltingHashRepository(
 
     private fun hash(raw: String, type: HashType): String {
         val digest = MessageDigest.getInstance(type.raw).digest("$salt$raw".toByteArray())
-        return digest.fold("", { hash, chunk -> hash + "%02x".format(chunk) })
+        return digest.fold("") { hash, chunk -> hash + "%02x".format(chunk) }
     }
 }

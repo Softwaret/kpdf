@@ -1,3 +1,4 @@
 package com.softwaret.kpdf.model.inline
 
-inline class Login(val value: String)
+@JvmInline
+value class Login(val value: String)

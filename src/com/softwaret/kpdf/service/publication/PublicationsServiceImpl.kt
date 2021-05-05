@@ -11,8 +11,8 @@ import com.softwaret.kpdf.model.inline.*
 import com.softwaret.kpdf.util.exception.PublicationException
 import com.softwaret.kpdf.util.extension.asId
 import org.jetbrains.exposed.exceptions.ExposedSQLException
+import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import org.jetbrains.exposed.sql.transactions.transaction
-import javax.sql.rowset.serial.SerialBlob
 
 class PublicationsServiceImpl : PublicationsService {
 
@@ -37,7 +37,7 @@ class PublicationsServiceImpl : PublicationsService {
             Publication.new {
                 name = publicationName.value
                 author = User.find { Users.login eq login.value }.first()
-                pdf = Pdf.new { blobPdf = SerialBlob(pdfFile.bytes) }
+                pdf = Pdf.new { blobPdf = ExposedBlob(pdfFile.bytes) }
                 metadata = Metadata.new { this.description = description.value }
             }
         }.id.value.asId()
@@ -54,7 +54,7 @@ class PublicationsServiceImpl : PublicationsService {
     override fun updatePublication(id: Id, pdfFile: PdfFile) {
         transaction {
             Publication.findById(id.value)?.let {
-                it.pdf.blobPdf = SerialBlob(pdfFile.bytes)
+                it.pdf.blobPdf = ExposedBlob(pdfFile.bytes)
             } ?: throw PublicationException.PublicationNotFound
         }
     }

@@ -1,6 +1,6 @@
 package com.softwaret.kpdf.db.tables.metadata
 
-import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Metadatas : IntIdTable() {
     private const val DESCRIPTION_LENGTH = 500

@@ -1,6 +1,6 @@
 package com.softwaret.kpdf.db.tables.user
 
-import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Users : IntIdTable() {
     private const val LOGIN_LENGTH = 50
