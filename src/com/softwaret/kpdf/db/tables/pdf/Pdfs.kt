@@ -1,6 +1,6 @@
 package com.softwaret.kpdf.db.tables.pdf
 
-import org.jetbrains.exposed.dao.IntIdTable
+import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Pdfs : IntIdTable() {
 

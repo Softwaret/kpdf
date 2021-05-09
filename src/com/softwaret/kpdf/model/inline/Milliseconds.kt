@@ -1,3 +1,4 @@
 package com.softwaret.kpdf.model.inline
 
-inline class Milliseconds(val value: Long)
+@JvmInline
+value class Milliseconds(val value: Long)
