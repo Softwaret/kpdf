@@ -4,13 +4,13 @@ import com.softwaret.kpdf.controller.base.BaseController
 import com.softwaret.kpdf.interactor.login.AuthInteractor
 import com.softwaret.kpdf.model.inline.Login
 import com.softwaret.kpdf.model.inline.Password
-import com.softwaret.kpdf.response.BadRequest
-import com.softwaret.kpdf.response.OK
 import com.softwaret.kpdf.response.Response
-import com.softwaret.kpdf.response.Unauthorized
+import com.softwaret.kpdf.response.badRequest
 import com.softwaret.kpdf.response.error.ErrorResponseBody
+import com.softwaret.kpdf.response.ok
 import com.softwaret.kpdf.response.success.LoginResponseBody
 import com.softwaret.kpdf.response.success.RefreshTokenResponseBody
+import com.softwaret.kpdf.response.unauthorized
 import com.softwaret.kpdf.validation.InputValidator
 
 class AuthControllerImpl(
@@ -20,14 +20,14 @@ class AuthControllerImpl(
 
     override suspend fun login(login: Login, password: Password) = when {
         isInputValid(login, password).not() ->
-            Response.BadRequest(ErrorResponseBody.InputInvalid)
+            Response.badRequest(ErrorResponseBody.InputInvalid)
 
         userExistsAndPasswordIsValid(login, password).not() ->
-            Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
+            Response.unauthorized(ErrorResponseBody.AuthorizationFailed)
 
         else -> {
             val (token, refreshToken) = loginUser(login, password)
-            Response.OK(LoginResponseBody(token, refreshToken))
+            Response.ok(LoginResponseBody(token, refreshToken))
         }
     }
 
@@ -42,11 +42,11 @@ class AuthControllerImpl(
 
     override suspend fun refreshToken(login: Login, refreshToken: String) = when {
         isRefreshTokenValid(refreshToken).not() ->
-            Response.Unauthorized(ErrorResponseBody.AuthorizationFailed)
+            Response.unauthorized(ErrorResponseBody.AuthorizationFailed)
 
         else -> {
             val (newToken, newRefreshToken) = generateNewTokens(login, refreshToken)
-            Response.OK(RefreshTokenResponseBody(newToken, newRefreshToken))
+            Response.ok(RefreshTokenResponseBody(newToken, newRefreshToken))
         }
     }
 
