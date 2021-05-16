@@ -27,5 +27,6 @@ hs_err_pid*
 /build
 /out
 
+# This should be added to git ignore but because it is a sample project we will commit application config
 # application.conf file with security-related configs
-/resources/application.conf
+#/resources/application.conf

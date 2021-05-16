@@ -1,3 +1,4 @@
 package com.softwaret.kpdf.model.inline
 
-inline class PublicationName(val value: String)
+@JvmInline
+value class PublicationName(val value: String)

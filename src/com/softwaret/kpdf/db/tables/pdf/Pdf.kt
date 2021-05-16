@@ -1,8 +1,9 @@
 package com.softwaret.kpdf.db.tables.pdf
 
-import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import java.io.ByteArrayInputStream
 
 class Pdf(id: EntityID<Int>) : IntEntity(id) {
 
@@ -12,5 +13,5 @@ class Pdf(id: EntityID<Int>) : IntEntity(id) {
 }
 
 fun Pdf.toPdfTile() = PdfTile(
-    inputStream = blobPdf.binaryStream
+    inputStream = ByteArrayInputStream(blobPdf.bytes)
 )

@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.lang.IllegalArgumentException
 import kotlin.test.assertNotNull
 
 class UserTest : BaseTableTest() {
@@ -28,7 +29,7 @@ class UserTest : BaseTableTest() {
 
     @Test
     fun `create new user should fail with login over 50 chars`() {
-        assertThrows<IllegalStateException> {
+        assertThrows<IllegalArgumentException> {
             transaction {
                 User.new {
                     login = "a".repeat(51)

@@ -13,6 +13,8 @@ import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
 import com.softwaret.kpdf.service.token.JWTTokenVerifierService
 import com.softwaret.kpdf.service.user.UserService
+import com.softwaret.kpdf.util.RESPOND_FILE_DIR
+import com.softwaret.kpdf.util.bindUtils
 import com.softwaret.kpdf.util.extension.*
 import com.softwaret.kpdf.util.parameters.JwtParameters
 import com.softwaret.kpdf.util.parameters.ServiceParameters
@@ -28,7 +30,6 @@ import io.ktor.routing.*
 import org.kodein.di.ktor.di
 import java.io.File
 
-private const val EXAMPLE_APP_CONF_PATH = "resources/application-example.conf"
 private const val APP_CONF_PATH = "resources/application.conf"
 private const val CONFIG_ARG_NAME = "-config="
 
@@ -43,7 +44,6 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addCo
 private fun addConfFileLocation(args: Array<String>) = when {
     args.any { it.contains(CONFIG_ARG_NAME) } -> args
     File(APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$APP_CONF_PATH"
-    File(EXAMPLE_APP_CONF_PATH).exists() -> args + "$CONFIG_ARG_NAME$EXAMPLE_APP_CONF_PATH"
     else -> args
 }
 
@@ -88,7 +88,10 @@ private fun setupDb() {
 
 private fun Application.bindDI() {
     di {
-        bindParameters(salt = environment.config.stringProperty("config.SALT"))
+        bindParameters(
+            salt = environment.config.stringProperty("config.SALT")
+        )
+        bindUtils(environment.getRespondFileDir())
         bindValidators()
         bindControllers()
         bindInteractors()
@@ -101,7 +104,7 @@ private fun Application.bindRouting() {
     routing {
         auth(instance())
         register(instance())
-        publications(instance())
+        publications(instance(), instance(tag = RESPOND_FILE_DIR))
     }
 }
 

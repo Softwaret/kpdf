@@ -17,12 +17,12 @@ class PublicationsInteractorImpl(
 
     override fun insertPublication(
         publicationName: PublicationName,
-        pdfBase64: PdfBase64,
+        pdfFile: PdfFile,
         login: Login,
         description: Description
     ) = publicationsService.insertPublication(
         publicationName,
-        pdfBase64,
+        pdfFile,
         login,
         description
     )
@@ -30,6 +30,6 @@ class PublicationsInteractorImpl(
     override fun deletePublication(id: Id) =
         publicationsService.deletePublication(id)
 
-    override fun updatePublication(id: Id, pdfBase64: PdfBase64) =
-        publicationsService.updatePublication(id, pdfBase64)
+    override fun updatePublication(id: Id, pdfFile: PdfFile) =
+        publicationsService.updatePublication(id, pdfFile)
 }

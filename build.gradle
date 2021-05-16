@@ -11,7 +11,7 @@ buildscript {
 
 plugins {
     id "io.gitlab.arturbosch.detekt" version "1.11.0-RC1"
-    id "org.jlleitschuh.gradle.ktlint" version "9.3.0"
+    id "org.jmailen.kotlinter" version "3.4.4"
     id "org.jetbrains.dokka" version "0.10.1"
     id "jacoco"
 }
@@ -49,6 +49,7 @@ dependencies {
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     // Ktor
     implementation "io.ktor:ktor-server-netty:$ktor_version"
@@ -68,8 +69,13 @@ dependencies {
     // Kodein DI
     implementation "org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version"
 
-    // Exposed SQL
-    implementation "org.jetbrains.exposed:exposed:$exposed_version"
+    // H2 Database
+    implementation "com.h2database:h2:$h2_database_version"
+
+    // Exposed
+    implementation "org.jetbrains.exposed:exposed-core:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-dao:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-jdbc:$exposed_version"
 
     // JWT tokens
     implementation "io.ktor:ktor-auth-jwt:$ktor_version"
@@ -107,8 +113,8 @@ dokka {
 }
 
 jacoco {
-    toolVersion = "0.8.5"
-    reportsDir = file("$buildDir/reports")
+    toolVersion = "0.8.7"
+    reportsDirectory = file("$buildDir/reports")
 }
 
 jacocoTestReport {

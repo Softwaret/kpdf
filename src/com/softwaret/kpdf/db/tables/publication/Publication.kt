@@ -6,9 +6,9 @@ import com.softwaret.kpdf.db.tables.pdf.Pdf
 import com.softwaret.kpdf.db.tables.pdf.toPdfTile
 import com.softwaret.kpdf.db.tables.user.User
 import com.softwaret.kpdf.db.tables.user.toUserTile
-import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
 
 class Publication(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Publication>(Publications)
