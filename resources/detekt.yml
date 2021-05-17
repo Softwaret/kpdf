@@ -1,6 +1,8 @@
 formatting:
   NoWildcardImports:
     active: false
+  FinalNewline:
+    active: false
 
 style:
   WildcardImport:

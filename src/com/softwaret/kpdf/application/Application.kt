@@ -7,11 +7,11 @@ import com.softwaret.kpdf.controller.bindControllers
 import com.softwaret.kpdf.db.H2Db
 import com.softwaret.kpdf.interactor.bindInteractors
 import com.softwaret.kpdf.repository.bindRepositories
-import com.softwaret.kpdf.routing.routes.login
+import com.softwaret.kpdf.routing.routes.auth
 import com.softwaret.kpdf.routing.routes.publications
 import com.softwaret.kpdf.routing.routes.register
 import com.softwaret.kpdf.service.bindServices
-import com.softwaret.kpdf.service.token.JWTTokenVeryfingService
+import com.softwaret.kpdf.service.token.JWTTokenVerifierService
 import com.softwaret.kpdf.service.user.UserService
 import com.softwaret.kpdf.util.RESPOND_FILE_DIR
 import com.softwaret.kpdf.util.bindUtils
@@ -37,7 +37,7 @@ private val Application.userService
     get() = instance<UserService>()
 
 private val Application.jwtTokenVerifierService
-    get() = instance<JWTTokenVeryfingService>()
+    get() = instance<JWTTokenVerifierService>()
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(addConfFileLocation(args))
 
@@ -69,7 +69,7 @@ private fun Application.installFeatures() {
     install(Authentication) {
         jwt {
             realm = environment.config.realm
-            verifier(buildJwtVerifier())
+            verifier(jwtTokenVerifierService.obtainVerifier())
             validate { validateCredential(it) }
         }
     }
@@ -102,7 +102,7 @@ private fun Application.bindDI() {
 
 private fun Application.bindRouting() {
     routing {
-        login(instance())
+        auth(instance())
         register(instance())
         publications(instance(), instance(tag = RESPOND_FILE_DIR))
     }
@@ -116,8 +116,4 @@ private fun Application.obtainParameters() = environment.config.run {
             issuer
         )
     )
-}
-
-private fun Application.buildJwtVerifier() = environment.config.run {
-    jwtTokenVerifierService.buildVerifier(algorithm, issuer)
 }

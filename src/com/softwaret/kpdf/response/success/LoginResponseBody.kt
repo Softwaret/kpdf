@@ -3,5 +3,6 @@ package com.softwaret.kpdf.response.success
 import com.softwaret.kpdf.response.ResponseBody
 
 data class LoginResponseBody(
-    val token: String
+    val token: String,
+    val refreshToken: String
 ) : ResponseBody

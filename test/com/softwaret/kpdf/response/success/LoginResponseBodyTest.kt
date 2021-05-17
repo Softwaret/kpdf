@@ -7,9 +7,11 @@ internal class LoginResponseBodyTest {
 
     @Test
     fun `LoginResponseBody should be creatable`() {
-        val raw = "123"
-        val body = LoginResponseBody(raw)
+        val token = "123"
+        val refreshToken = "123"
+        val body = LoginResponseBody(token, refreshToken)
 
-        assertEquals(raw, body.token)
+        assertEquals(token, body.token)
+        assertEquals(refreshToken, body.refreshToken)
     }
 }
